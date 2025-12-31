@@ -1,0 +1,19 @@
+# Arquivos objeto (compilação)
+*.o
+
+# Executável
+game
+
+# Pasta de build (se estiver usando)
+build/
+
+# Lixo de sistema do Linux
+*.swp       # Arquivos temporários do Vim
+*.tmp
+*~
+.DS_Store
+Thumbs.db
+
+# VSCode configs
+.vscode/
+*.code-workspace
