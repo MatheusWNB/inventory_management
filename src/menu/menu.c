@@ -1,5 +1,5 @@
-#include "libs.h"
-#include "menu.h"
+#include "libs/libs.h"
+#include "menu/menu.h"
 
 int print_menu(void){
     int resposta;
@@ -13,6 +13,7 @@ int print_menu(void){
     // Sistema de validação básico de login (Vou implementar)
     //
 
+    putchar('\n');
     //Usuário seleciona uma opção do menu e a resposta é validada
     while(true){
         printf(
