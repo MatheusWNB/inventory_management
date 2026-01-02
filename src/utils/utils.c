@@ -6,3 +6,8 @@ void clearstdin(void){
     int c;
     while((c = getchar()) != '\n' && c != EOF);
 }
+
+//Limpa a quebra de linha do fgets
+void limpar_quebra_linha(char *nome){
+    nome[strcspn(nome, "\n")] = '\0';
+}
