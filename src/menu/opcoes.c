@@ -4,7 +4,7 @@
 #include "menu/menu.h"
 
 //Opção "1" o usuário pode editar e mostrar na tela os itens no seu estoque
-void print_edit_inventory(void){
+int print_edit_inventory(int *opcao_escolhida){
     FILE *ptr_arquivo_estoque;
     char nome_arquivo[15]; //Nome original
     char nome_arquivo_format[50]; //Nome formatado para abrir o arquivo no programa
@@ -31,13 +31,14 @@ void print_edit_inventory(void){
 
             while(true){
                 int resposta;
+                int *ptr_resposta = &resposta;
                 int validar;
 
                 printf("Deseja tentar novamente(0) ou criar um novo estoque(1)?: ");
-                scanf("%d", &resposta);
+                scanf("%d", ptr_resposta);
 
                 //Valida a resposta do usuário
-                validar = validar_resposta(0, 1, resposta); 
+                validar = validar_resposta(0, 1, ptr_resposta); 
 
                 //Usuário digitou uma opção incorreta, digite a opção novamente
                 if(validar == false){
@@ -45,15 +46,16 @@ void print_edit_inventory(void){
 
                 } else if(validar == true){
                     //Retorna para o inicio da função atual
-                    if(resposta == 0){
+                    if(*ptr_resposta == 0){
                         clearstdin();
                         break;
 
                     //Usuário vai para a função de registro de novo estoque
-                    } else if(resposta == 1){
+                    } else if(*ptr_resposta == 1){
                         clearstdin();
                         system("clear");
-                        register_inventory();
+                        *opcao_escolhida = 2;
+                        return *opcao_escolhida;
                     }
                 }
             }
@@ -67,7 +69,7 @@ void print_edit_inventory(void){
 
 }
 
-void register_inventory(void){
+int register_inventory(int *opcao_escolhida){
     FILE *ptr_arquivo_estoque;
     char nome_arquivo[15]; //Nome original
     char nome_arquivo_format[50]; //Nome formatado para abrir o arquivo no programa
@@ -86,14 +88,17 @@ void register_inventory(void){
         //Se a criação do arquivo falhou, o usuário decide oque vai fazer
         if (ptr_arquivo_estoque == NULL){
             printf("Não foi possível criar o novo arquivo.\n");
+            
             int validar;
             int resposta;
+            int *ptr_resposta = &resposta;
 
             while(true){
                 printf("Deseja tentar novamente(0) ou voltar para o menu principal(1)?: ");
-                scanf("%d", &resposta);
+                scanf("%d", ptr_resposta);
 
-                validar = validar_resposta(0, 1, resposta);
+                //Valida a resposta do usuário
+                validar = validar_resposta(0, 1, ptr_resposta);
 
                 //Usuário digitou uma opção incorreta, digite a opção novamente
                 if (validar == false){
@@ -101,12 +106,14 @@ void register_inventory(void){
 
                 } else if (validar == true){
                     //Retorna para o inicio da função atual
-                    if (resposta == 0)
+                    if (*ptr_resposta == 0)
                         break;
 
                     //Usuário retorna para o menu
-                    else if (resposta == 1)
-                        print_menu();
+                    if (*ptr_resposta == 1){
+                        *opcao_escolhida = 0;
+                        return *opcao_escolhida;
+                    }
                 }
             }
         }

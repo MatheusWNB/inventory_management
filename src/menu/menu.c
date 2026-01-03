@@ -2,8 +2,7 @@
 #include "menu/menu.h"
 #include "utils/utils.h"
 
-int print_menu(void){
-    int resposta;
+int print_menu(int *opcao_escolhida){
 
     printf(
         "Olá, seja bem-vindo ao gerenciador de estoque!\n"
@@ -27,17 +26,17 @@ int print_menu(void){
         );
 
         printf("Selecione uma opção: ");
-        scanf("%d", &resposta);
+        scanf("%d", opcao_escolhida);
 
         //Valida a resposta do usuário
-        validar = validar_resposta(1, 3, resposta);
+        validar = validar_resposta(1, 3, opcao_escolhida);
 
         if (validar == false){
             continue;
         }
 
         //A opção que o usuário escolheu é retornada para a main
-        return resposta;
+        return *opcao_escolhida;
     }
     
     
