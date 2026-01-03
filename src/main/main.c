@@ -8,9 +8,8 @@ int main() {
     switch(opcao_escolhida){
         case 1:
             system("clear");
-            print_edit_menu();
+            print_edit_inventory();
             break;
-
     }
 
     return 0;

@@ -1,5 +1,6 @@
 #include "libs/libs.h"
 #include "menu/menu.h"
+#include "utils/utils.h"
 
 int print_menu(void){
     int resposta;
@@ -16,6 +17,8 @@ int print_menu(void){
     putchar('\n');
     //Usuário seleciona uma opção do menu e a resposta é validada
     while(true){
+        int validar;
+
         printf(
             "///////// MENU //////////\n"
             "(1) Visualizar e editar estoques registrados\n"
@@ -26,9 +29,10 @@ int print_menu(void){
         printf("Selecione uma opção: ");
         scanf("%d", &resposta);
 
-        if (resposta < 1 || resposta > 3){
-            system("clear");
-            printf("Por favor, digite uma opção válida!");
+        //Valida a resposta do usuário
+        validar = validar_resposta(1, 3, resposta);
+
+        if (validar == false){
             continue;
         }
 
