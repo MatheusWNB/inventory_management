@@ -28,6 +28,7 @@ int main() {
         A função chamada dependerá do valor digitado pelo usuário
         */
 
+        clearstdin();
         switch(*ptr_opcao_escolhida){
             //Chama a função para abrir e editar os arquivos
             //existentes do usuário
