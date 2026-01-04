@@ -31,8 +31,6 @@ int main() {
     */
 
     while(true){
-
-        clearstdin();
         switch(*ptr_opcao_escolhida){
             /*
             Chama a função para abrir e editar os arquivos
