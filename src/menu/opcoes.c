@@ -83,7 +83,7 @@ int register_inventory(int *opcao_escolhida){
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, sizeof(nome_arquivo_format), "%s.txt", nome_arquivo);
-        ptr_arquivo_estoque = fopen(nome_arquivo_format, "r+");
+        ptr_arquivo_estoque = fopen(nome_arquivo_format, "w");
 
         //Se a criação do arquivo falhou, o usuário decide oque vai fazer
         if (ptr_arquivo_estoque == NULL){

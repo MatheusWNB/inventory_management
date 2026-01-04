@@ -11,27 +11,33 @@ int main() {
     //Primeira validação de escolha do usuário
     *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
 
-    //While gerencia todo o fluxo de escolhas conforme a necessidade
-    //do usuário
+    /* 
+    Esse while gerencia todo o fluxo de escolhas conforme a necessidade
+    do usuário.
+    
+    O while principal funciona da seguinte maneira:
+    O usuário chama a primeira função, todas as escolhas 
+    serão armazenadas na variável "opcao_escolhida", que será 
+    referenciada em todas as funções pelo ponteiro "ptr_opcao_escolhida".
+
+    Conforme a necessidade do usuário dentro das funções,
+    ele poderá retornar para o menu de escolhas ou outras opções.
+
+    Se a função retorna "*ptr_opcao_escolhida == 0"
+    O menu principal de escolhas é chamado.
+
+    Se a função retorna "*ptr_opcao_escolhida != 0"
+    A função chamada dependerá do valor digitado pelo usuário
+    */
+
     while(true){
-        /* 
-        O while principal funciona da seguinte maneira:
-        O usuário chama a primeira função, todas as escolhas 
-        serão armazenadas no ponteiro "ptr_opcao_escolhida".
-        Conforme a necessidade do usuário dentro das funções,
-        ele poderá retornar para o menu de escolhas ou outras opções.
-
-        Se a função retorna "*ptr_opcao_escolhida == 0"
-        O menu principal de escolhas é chamado.
-
-        Se a função retorna "*ptr_opcao_escolhida != 0"
-        A função chamada dependerá do valor digitado pelo usuário
-        */
 
         clearstdin();
         switch(*ptr_opcao_escolhida){
-            //Chama a função para abrir e editar os arquivos
-            //existentes do usuário
+            /*
+            Chama a função para abrir e editar os arquivos
+            existentes do usuário
+            */
             case 1:
                 system("clear");
                 print_edit_inventory(ptr_opcao_escolhida);

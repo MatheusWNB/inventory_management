@@ -12,9 +12,11 @@ void limpar_quebra_linha(char *nome){
     nome[strcspn(nome, "\n")] = '\0';
 }
 
-//Retorna a validação da resposta do usuário com base em um intervalo de números inteiros
-//False = Usuário digitou uma opção fora do intervalo válido
-//True = Resposta do usuário é validada
+/*
+Retorna a validação da resposta do usuário com base em um intervalo de números inteiros
+False = Usuário digitou uma opção fora do intervalo válido
+True = Resposta do usuário é validada
+*/
 int validar_resposta(int a, int b, int *resposta_usuario){
     int validacao;
 
