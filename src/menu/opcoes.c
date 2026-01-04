@@ -116,5 +116,16 @@ int register_inventory(int *opcao_escolhida){
                 }
             }
         }
+
+    system("clear");
+    printf("O seu arquivo foi criado com sucesso!\n");
+    printf("Aperte 'ENTER' para ser redirecionado ao menu de edição de estoque: ");
+    getchar();
+
+    fclose(ptr_arquivo_estoque);
+
+    *opcao_escolhida = 1;
+    return *opcao_escolhida;
+
     }
 }
