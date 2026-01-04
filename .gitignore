@@ -2,7 +2,7 @@
 *.o
 
 # Executável
-game
+app
 
 # Pasta de build (se estiver usando)
 build/
