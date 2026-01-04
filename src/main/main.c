@@ -8,6 +8,13 @@ int main() {
     int *ptr_opcao_escolhida = &opcao_escolhida;
     int validar;
 
+    //Testando função getname()
+    char nome[15];
+    printf("Digite o seu nome: ");
+    getname(nome, 15);
+
+    printf("nome: %s\n", nome);
+
     //Primeira validação de escolha do usuário
     *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
 

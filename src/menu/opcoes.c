@@ -10,15 +10,12 @@ int print_edit_inventory(int *opcao_escolhida){
     char nome_arquivo_format[50]; //Nome formatado para abrir o arquivo no programa
     char abrir_arquivo_format[200]; //Nome formatado para abrir o .txt no sistema
 
-    clearstdin();
-
     while(true){
         printf("////////// GERENCIAR ESTOQUE ////////// \n");
         printf("Digite o nome do arquivo do seu estoque: ");
         
         //Usuário digita o nome do seu arquivo
-        fgets(nome_arquivo, sizeof(nome_arquivo), stdin);
-        limpar_quebra_linha(nome_arquivo);
+        getname(nome_arquivo, sizeof(nome_arquivo));
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, sizeof(nome_arquivo_format), "%s.txt", nome_arquivo);
@@ -69,6 +66,7 @@ int print_edit_inventory(int *opcao_escolhida){
 
 }
 
+//Opção "2" o usuário pode registrar novos estoques
 int register_inventory(int *opcao_escolhida){
     FILE *ptr_arquivo_estoque;
     char nome_arquivo[15]; //Nome original
@@ -78,12 +76,12 @@ int register_inventory(int *opcao_escolhida){
         printf("////////// CRIAR NOVO ESTOQUE ////////// \n");
         printf("Nome do seu novo estoque (Max. 15 caracteres): ");
 
-        fgets(nome_arquivo, sizeof(nome_arquivo), stdin);
-        limpar_quebra_linha(nome_arquivo);
+        //Usuário digita o nome do seu arquivo
+        getname(nome_arquivo, 15);
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, sizeof(nome_arquivo_format), "%s.txt", nome_arquivo);
-        ptr_arquivo_estoque = fopen(nome_arquivo_format, "w");
+        ptr_arquivo_estoque = fopen(nome_arquivo_format, "a+");
 
         //Se a criação do arquivo falhou, o usuário decide oque vai fazer
         if (ptr_arquivo_estoque == NULL){
@@ -96,6 +94,7 @@ int register_inventory(int *opcao_escolhida){
             while(true){
                 printf("Deseja tentar novamente(0) ou voltar para o menu principal(1)?: ");
                 scanf("%d", ptr_resposta);
+                clearstdin();
 
                 //Valida a resposta do usuário
                 validar = validar_resposta(0, 1, ptr_resposta);
@@ -117,7 +116,5 @@ int register_inventory(int *opcao_escolhida){
                 }
             }
         }
-
-        clearstdin();
     }
 }

@@ -9,9 +9,9 @@ int print_menu(int *opcao_escolhida){
         "Para iniciarmos digite os seus dados de login ou crie uma nova conta:\n"
     );
 
-    //
-    // Sistema de validação básico de login (Vou implementar)
-    //
+    /*
+    Sistema de validação básico de login (Vou implementar)
+    */
 
     putchar('\n');
     //Usuário seleciona uma opção do menu e a resposta é validada
@@ -36,6 +36,7 @@ int print_menu(int *opcao_escolhida){
         }
 
         //A opção que o usuário escolheu é retornada para a main
+        clearstdin();
         return *opcao_escolhida;
     }
     
