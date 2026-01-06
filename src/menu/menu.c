@@ -1,17 +1,15 @@
 #include "libs/libs.h"
 #include "menu/menu.h"
 #include "utils/utils.h"
+#include "menu/login_register.h"
 
 int print_menu(int *opcao_escolhida){
 
     printf(
         "Olá, seja bem-vindo ao gerenciador de estoque!\n"
-        "Para iniciarmos digite os seus dados de login ou crie uma nova conta:\n"
+        "Para iniciarmos digite os seus dados de login(0) ou crie uma nova conta(1):\n"
     );
-
-    /*
-    Sistema de validação básico de login (Vou implementar)
-    */
+    register_user();
 
     putchar('\n');
     //Usuário seleciona uma opção do menu e a resposta é validada
