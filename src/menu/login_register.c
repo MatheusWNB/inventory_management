@@ -1,6 +1,7 @@
 #include "libs/libs.h"
 #include "utils/utils.h"
 
+//Registra um novo usuário
 void register_user(void){
     system("clear");
     char users[5][15] = {
@@ -9,22 +10,25 @@ void register_user(void){
 
     char nome_usuario[15];
 
+    //Usuários serão registrados nesse arquivo (vou implementar)
     FILE *f_users;
     f_users = fopen("usuarios_registrados.txt", "a+");
 
     printf("////////// REGISTRO DE USUÁRIO //////////\n");
-    while(true){
+
+    int loop = true;
+    while(loop){
         printf("Crie um nome de usuário[max 15 caracteres]: ");
+        //Obtém o nome que o usuário digitar
         getname(nome_usuario, 15);
 
+        //Verifica se o nome de usuário já existe
         for(int i = 0; i < 5; i++){
-            printf("%s\n", users[i]);
-            printf("%s\n", nome_usuario);
-            printf("%d\n", (int)strlen(users[i]));
-            printf("%d\n", (int)strlen(nome_usuario));
+
+            //Se tiver pelo menos um usuário ele valida
             if(strlen(users[i]) >= 1){
-                printf("oi\n");
-                if(strncmp(nome_usuario, users[i], strlen(nome_usuario)) == 0){
+                //Se o usuário já existe pede o nome novamente
+                if(strncmp(nome_usuario, users[i], 15) == 0){
                     system("clear");
                     printf("********** USUÁRIO JÁ CADASTRADO! **********\n");
                     break;
@@ -34,12 +38,11 @@ void register_user(void){
                 }
 
             } else {
-                printf("Usuário cadastrado com sucesso!\n");
+                system("clear");
+                printf("********** USUÁRIO CADASTRADO COM SUCESSO! **********\n");
+                loop = false;
                 break;
             }
         }
-
-
     }
-        
 }
