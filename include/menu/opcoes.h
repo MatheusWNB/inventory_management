@@ -1,7 +1,9 @@
 #ifndef OPCOES_H
 #define OPCOES_H
 
-int print_edit_inventory(int *opcao_escolhida);
+int print_inventory(int *opcao_escolhida);
+
+void edit_inventory(FILE *fp);
 
 int register_inventory(int *opcao_escolhida);
 

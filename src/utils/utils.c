@@ -22,13 +22,13 @@ int validar_resposta(int a, int b, int *resposta_usuario){
 
     if (*resposta_usuario < a || *resposta_usuario > b){
         system("clear");
-        printf("Por favor, digite uma opção válida!\n");
+        printf("********** DIGITE UMA OPÇÃO VÁLIDA! **********\n");
         validacao = false;
     }
 
     if (*resposta_usuario >= a && *resposta_usuario <= b)
         validacao = true;
-
+    
     return validacao;
 }
 
@@ -38,7 +38,7 @@ void getname(char *nome, int max_len){
     char buffer_name[BUFFER]; //Buffer temporário para a variável "nome"
 
     while(true){
-        //Obtém o nome do usuário e armazena em buffer
+        //Obtém o nome e armazena em buffer
         fgets(buffer_name, BUFFER, stdin); 
         
         //Se buffer_name não for um "enter" ele entra

@@ -4,7 +4,7 @@
 #include "menu/menu.h"
 
 //Opção "1" o usuário pode editar e mostrar na tela os itens no seu estoque
-int print_edit_inventory(int *opcao_escolhida){
+int print_inventory(int *opcao_escolhida){
     FILE *ptr_arquivo_estoque;
     char nome_arquivo[15]; //Nome original
     char nome_arquivo_format[50]; //Nome formatado para abrir o arquivo no programa
@@ -58,6 +58,8 @@ int print_edit_inventory(int *opcao_escolhida){
             }
             continue;
         } 
+        system("clear");
+        edit_inventory(ptr_arquivo_estoque);
         //Nome formatado para abrir o .txt no sistema
         snprintf(abrir_arquivo_format, sizeof(nome_arquivo_format), "open %s", nome_arquivo_format);
         //Abre o arquivo .txt
