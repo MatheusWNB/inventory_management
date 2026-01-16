@@ -8,6 +8,8 @@ int main() {
     int *ptr_opcao_escolhida = &opcao_escolhida;
     int validar;
 
+    getname2();
+
     //Primeira validação de escolha do usuário
     *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
 

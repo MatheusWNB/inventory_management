@@ -74,4 +74,27 @@ void getname(char *nome, int max_len){
     }
 }
 
+void getname2(){
+    char *nome = NULL;
+    int tamanho = 0;
+    char c;
+
+    while((c = getchar()) != '\n'){
+        char *temp = realloc(nome, tamanho + 2);
+
+        if(temp == NULL)
+            break;
+
+        nome = temp;
+        nome[tamanho] = c;
+        tamanho++;
+    }
+
+    nome[tamanho] = '\0';
+
+    printf("Nome: %s\n", nome);
+    free(nome);
+    nome = NULL;
+}
+
 

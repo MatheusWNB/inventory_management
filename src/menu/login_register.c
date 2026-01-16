@@ -3,7 +3,7 @@
 
 //Registra um novo usuário
 void register_user(void){
-    system("clear");
+    // system("clear");
     char users[5][15] = {
         {"Matheus"}
     };
