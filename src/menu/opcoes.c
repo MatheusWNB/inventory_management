@@ -15,7 +15,7 @@ int print_inventory(int *opcao_escolhida){
         printf("Digite o nome do arquivo do seu estoque: ");
         
         //Usuário digita o nome do seu arquivo
-        getname(nome_arquivo, sizeof(nome_arquivo));
+        getname(nome_arquivo, 15);
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, sizeof(nome_arquivo_format), "%s.txt", nome_arquivo);

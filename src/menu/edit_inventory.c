@@ -9,21 +9,27 @@ void edit_inventory(FILE *fp){
 
     int i = 0;
     int quantidade_bytes;
-    char *ptr_itens;
+    char *ptr_itens = NULL;
+    char *nome_item = NULL;
     
     while(i < 100){
-        char *nome_item = NULL;
-        printf("Item a ser registrado(max. 15 caracteres por item): ");
-        getname(nome_item, 15);
+        printf("Item a ser registrado(max. 20 caracteres por item): ");
+        getname(nome_item, 20);
         int len_name = strlen(nome_item);
+        quantidade_bytes += len_name+1;
 
-        if(i == 0)
-            ptr_itens = malloc(len_name* sizeof(char));
-        else
-            ptr_itens = realloc(ptr_itens, quantidade_bytes);
+        printf("oi\n");
+        char *temp = (char *)realloc(ptr_itens, quantidade_bytes);
 
+        if(temp == NULL){
+            system("clear");
+            printf("********** REGISTRO DE ITEM FALHOU **********\n");
+            free(temp);
+            break;
+        }
+        
+        printf("oi");
         strcpy(ptr_itens, nome_item);
-        quantidade_bytes = quantidade_bytes + len_name;
         i++;
         printf("%s\n", ptr_itens);
     }
