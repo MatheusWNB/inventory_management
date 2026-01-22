@@ -3,12 +3,12 @@
 
 //Registra um novo usuário
 void register_user(void){
-    // system("clear");
+    system("clear");
     char users[5][15] = {
         {"Matheus"}
     };
 
-    char nome_usuario[15];
+    char *nome_usuario = NULL;
 
     //Usuários serão registrados nesse arquivo (vou implementar)
     FILE *f_users;
@@ -20,11 +20,11 @@ void register_user(void){
     while(loop){
         printf("Crie um nome de usuário[max 15 caracteres]: ");
         //Obtém o nome que o usuário digitar
-        getname(nome_usuario, 15);
+        nome_usuario = getname(15);
 
         //Verifica se o nome de usuário já existe
         for(int i = 0; i < 5; i++){
-
+            
             //Se tiver pelo menos um usuário ele valida
             if(strlen(users[i]) >= 1){
                 //Se o usuário já existe pede o nome novamente

@@ -6,7 +6,7 @@
 //Opção "1" o usuário pode editar e mostrar na tela os itens no seu estoque
 int print_inventory(int *opcao_escolhida){
     FILE *ptr_arquivo_estoque;
-    char nome_arquivo[15]; //Nome original
+    char *nome_arquivo = NULL;//Nome original
     char nome_arquivo_format[50]; //Nome formatado para abrir o arquivo no programa
     char abrir_arquivo_format[200]; //Nome formatado para abrir o .txt no sistema
 
@@ -15,7 +15,7 @@ int print_inventory(int *opcao_escolhida){
         printf("Digite o nome do arquivo do seu estoque: ");
         
         //Usuário digita o nome do seu arquivo
-        getname(nome_arquivo, 15);
+        nome_arquivo = getname(15);
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, sizeof(nome_arquivo_format), "%s.txt", nome_arquivo);
@@ -65,13 +65,12 @@ int print_inventory(int *opcao_escolhida){
         //Abre o arquivo .txt
         system(abrir_arquivo_format);
     }
-
 }
 
 //Opção "2" o usuário pode registrar novos estoques
 int register_inventory(int *opcao_escolhida){
     FILE *ptr_arquivo_estoque;
-    char nome_arquivo[15]; //Nome original
+    char *nome_arquivo = NULL; //Nome original
     char nome_arquivo_format[50]; //Nome formatado para abrir o arquivo no programa
 
     while(true){
@@ -79,7 +78,7 @@ int register_inventory(int *opcao_escolhida){
         printf("Nome do seu novo estoque (Max. 15 caracteres): ");
 
         //Usuário digita o nome do seu arquivo
-        getname(nome_arquivo, 15);
+        nome_arquivo = getname(15);
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, sizeof(nome_arquivo_format), "%s.txt", nome_arquivo);
@@ -118,16 +117,14 @@ int register_inventory(int *opcao_escolhida){
                 }
             }
         }
-
-    system("clear");
-    printf("O seu arquivo foi criado com sucesso!\n");
-    printf("Aperte 'ENTER' para ser redirecionado ao menu de edição de estoque: ");
-    getchar();
-
-    fclose(ptr_arquivo_estoque);
-
-    *opcao_escolhida = 1;
-    return *opcao_escolhida;
-
+        system("clear");
+        printf("O seu arquivo foi criado com sucesso!\n");
+        printf("Aperte 'ENTER' para ser redirecionado ao menu de edição de estoque: ");
+        getchar();
+    
+        fclose(ptr_arquivo_estoque);
+        free(nome_arquivo);
+    
+        return *opcao_escolhida = 1;
     }
 }

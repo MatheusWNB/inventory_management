@@ -33,8 +33,8 @@ int validar_resposta(int a, int b, int *resposta_usuario){
 }
 
 //Essa função obtém o nome que o usuário digitar de maneira mais segura
-void getname(char *nome, int max_len){
-    char *temp_nome = NULL;
+char *getname(int max_len){
+    char *nome = NULL;
     int tamanho = 0;
     int try_again = true;
     char c;
@@ -46,16 +46,16 @@ void getname(char *nome, int max_len){
             if(tamanho >= max_len)
                 break;
 
-            char *temp = realloc(temp_nome, tamanho + 2);
+            char *try_realloc = (char *) realloc(nome, tamanho + 2);
 
-            if(temp == NULL){
+            if(try_realloc == NULL){
                 printf("Realloc falhou\n");
-                free(temp_nome);
+                free(nome);
                 break;
             }
 
-            temp_nome = temp;
-            temp_nome[tamanho] = c;
+            nome = try_realloc;
+            nome[tamanho] = c;
             tamanho++;
         }
 
@@ -65,13 +65,12 @@ void getname(char *nome, int max_len){
         goto loop;
     }
 
-    strcpy(nome, temp_nome);
-    free(temp_nome);
-    temp_nome = NULL;
+    nome[tamanho] = '\0';
 
     if(tamanho >= max_len)
         clearstdin();
 
+    return nome;
 }
 
 

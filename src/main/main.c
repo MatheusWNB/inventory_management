@@ -7,7 +7,7 @@ int main() {
     int opcao_escolhida = 0;
     int *ptr_opcao_escolhida = &opcao_escolhida;
     int validar;
-
+    
     //Primeira validação de escolha do usuário
     *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
 
