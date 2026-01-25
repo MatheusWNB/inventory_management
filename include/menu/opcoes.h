@@ -3,7 +3,7 @@
 
 int print_inventory(int *opcao_escolhida);
 
-void edit_inventory(FILE *fp);
+void set_inventory(FILE *fp);
 
 int register_inventory(int *opcao_escolhida);
 
