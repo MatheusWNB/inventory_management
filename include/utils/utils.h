@@ -12,4 +12,6 @@ int validar_resposta(int min, int max, int *resposta_usuario);
 
 char *getname(int max_len);
 
+char *alloc_mem(int total_len);
+
 #endif

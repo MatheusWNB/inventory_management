@@ -67,10 +67,23 @@ char *getname(int max_len){
 
     nome[tamanho] = '\0';
 
-    if(tamanho >= max_len)
+    if(tamanho > max_len)
         clearstdin();
 
     return nome;
 }
+
+char *alloc_mem(int total_len){
+    char *name = NULL;
+    char *try_realloc = (char *) realloc(name, total_len + 1);
+
+    if(try_realloc == NULL)
+        printf("********** FALHA NA ALOCAÇÃO! *********");
+        
+    name = try_realloc;
+    return name;
+}
+
+
 
 
