@@ -7,17 +7,14 @@
 int print_inventory(int *opcao_escolhida){
     FILE *ptr_arquivo_estoque = NULL;
     char *nome_arquivo = NULL;//Nome original
-    int len_nome_arquivo;
 
     char *nome_arquivo_format = NULL; //Nome formatado para abrir o arquivo no programa
     char *abrir_arquivo_format = NULL; //Nome formatado para abrir o .txt no sistema
 
-    char format_txt[7] = "%s.txt";
+    char format_txt[7] = "%s.bin";
     int len_format_txt = strlen(format_txt);
     char format_open_txt[8] = "open %s";
     int len_format_open = strlen(format_open_txt);
-
-    int total_len;
 
     while(true){
         printf("////////// GERENCIAR ESTOQUE ////////// \n");
@@ -25,14 +22,16 @@ int print_inventory(int *opcao_escolhida){
         
         //Usuário digita o nome do seu arquivo
         nome_arquivo = getname(15);
-        len_nome_arquivo = strlen(nome_arquivo);
+        int len_nome_arquivo = strlen(nome_arquivo);
+
+        int total_len = len_nome_arquivo + len_format_txt;
         
         nome_arquivo_format = alloc_mem(total_len);
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, total_len + 1, format_txt, nome_arquivo);
-        ptr_arquivo_estoque = fopen(nome_arquivo_format, "r+"); 
-        
+        ptr_arquivo_estoque = fopen(nome_arquivo_format, "r+b");
+
         //Se a abertura do arquivo falhou, o usuário decide oque vai fazer
         if (ptr_arquivo_estoque == NULL){
             system("clear");
@@ -79,6 +78,9 @@ int print_inventory(int *opcao_escolhida){
 
         snprintf(abrir_arquivo_format, total_len, format_open_txt, nome_arquivo_format);
         system(abrir_arquivo_format);
+        
+        *opcao_escolhida = 0;
+        return *opcao_escolhida;
     }
 }
 
@@ -88,7 +90,7 @@ int register_inventory(int *opcao_escolhida){
     char *nome_arquivo = NULL; //Nome original
     char *nome_arquivo_format = NULL; //Nome formatado para abrir o arquivo no programa
 
-    char format_txt[7] = "%s.txt";
+    char format_txt[7] = "%s.bin";
     int len_format_txt = strlen(format_txt);
 
     int total_len;
@@ -106,7 +108,7 @@ int register_inventory(int *opcao_escolhida){
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, total_len + 1, format_txt, nome_arquivo);
-        ptr_arquivo_estoque = fopen(nome_arquivo_format, "a+");
+        ptr_arquivo_estoque = fopen(nome_arquivo_format, "a+b");
 
         //Se a criação do arquivo falhou, o usuário decide oque vai fazer
         if (ptr_arquivo_estoque == NULL){
@@ -145,7 +147,7 @@ int register_inventory(int *opcao_escolhida){
         printf("O seu arquivo foi criado com sucesso!\n");
         printf("Aperte 'ENTER' para ser redirecionado ao menu de edição de estoque: ");
         getchar();
-    
+
         fclose(ptr_arquivo_estoque);
         free(nome_arquivo);
     
