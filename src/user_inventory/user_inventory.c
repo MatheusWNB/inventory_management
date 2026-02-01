@@ -15,13 +15,13 @@ void verify_inventory(FILE *fp, int *validate){
     int is_empty = ftell(fp);
 
     if(is_empty == 0)
-        *validate = false;
+        *validate = 1;
     else if(is_empty > 0)
-        *validate = true;
+        *validate = 0;
 }
 
-void set_inventory(FILE *fp, char *username, char *items, 
-                        int *total_items, int *offset_items)
+void set_inventory_file(FILE *fp, char *username, char *items, 
+                        int total_items, int *offset_items)
 {      
     int validate;
     verify_inventory(fp, &validate);
@@ -33,12 +33,13 @@ void set_inventory(FILE *fp, char *username, char *items,
 
     int len_item;
     int total_bytes;
-    for(int i = 0; i < *total_items; i++){
+    for(int i = 0; i < total_items; i++){
         len_item = strlen(items + offset_items[i]);
-        fwrite(i, sizeof(int), 1, fp);
-        fwrite(offset_items[i], sizeof(int), 1, fp);
+        fwrite(&i, sizeof(int), 1, fp);
+        fwrite(&offset_items[i], sizeof(int), 1, fp);
         fwrite(items + offset_items[i], sizeof(char), len_item, fp);
     }
 
     total_bytes = ftell(fp);
+    fwrite(&total_bytes, sizeof(int), 1, fp);
 }

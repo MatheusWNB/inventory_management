@@ -1,8 +1,9 @@
 #include "libs/libs.h"
 #include "utils/utils.h"
+#include "user_inventory/user_inventory.h"
 #include "menu/opcoes.h"
 
-void set_inventory(FILE *fp){
+void set_inventory(FILE *fp, char *username){
     char *name_itens = NULL;
     char *temp_itens = NULL;
     char *name_item = NULL;
@@ -90,17 +91,30 @@ void set_inventory(FILE *fp){
                 goto loop;
 
             } else if(strncmp(resposta, "n", 1) == 0){
-                fprintf(fp, "////////// SEUS ITENS //////////\n");
-                for(int i1 = 0; i1 < quantidade_itens; i1++){
-                    fprintf(fp,
-                        "%d -> %s\n"
-                        "---------\n", i1 + 1, name_itens + len_names[i1]
+                set_inventory_file(fp, username, name_itens, quantidade_itens, len_names);
+
+                char nome[20];
+                int id;
+                int offset;
+                char item[20];
+                for(int i = 0; i < quantidade_itens; i++){
+
+                    rewind(fp);
+                    fread(nome, sizeof(char), strlen(username), fp);
+                    fread(&id, sizeof(int), 1, fp);
+                    fread(&offset, sizeof(int), 1, fp);
+                    fread(item, sizeof(char), strlen(name_itens + len_names[i]), fp);
+
+                    printf(
+                        "Nome: %s\n"
+                        "ID: %d\n"
+                        "Offset: %d\n"
+                        "Item: %s\n",
+                        nome, id, offset, item
                     );
                 }
             }
-
             continue;
-
         }else if(escolha == 2){
             printf("////////// VISUALIZAR E EDITAR ESTOQUE //////////\n");
             int any;

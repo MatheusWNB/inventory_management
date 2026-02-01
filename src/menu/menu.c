@@ -3,13 +3,13 @@
 #include "utils/utils.h"
 #include "menu/login_register.h"
 
-int print_menu(int *opcao_escolhida){
+int print_menu(int *opcao_escolhida, char *nome){
 
     printf(
         "Olá, seja bem-vindo ao gerenciador de estoque!\n"
         "Para iniciarmos digite os seus dados de login(0) ou crie uma nova conta(1):\n"
     );
-    register_user();
+    nome = register_user();
 
     putchar('\n');
     //Usuário seleciona uma opção do menu e a resposta é validada

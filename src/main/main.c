@@ -7,9 +7,11 @@ int main() {
     int opcao_escolhida = 0;
     int *ptr_opcao_escolhida = &opcao_escolhida;
     int validar;
+    char *nome = NULL;
+    nome = getname(15);
     
     //Primeira validação de escolha do usuário
-    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
+    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida, nome);
 
     /* 
     Esse while gerencia todo o fluxo de escolhas conforme a necessidade
@@ -38,14 +40,14 @@ int main() {
             */
             case 1:
                 system("clear");
-                print_inventory(ptr_opcao_escolhida);
+                print_inventory(ptr_opcao_escolhida, nome);
 
                 if (*ptr_opcao_escolhida != 0){
                     validar = validar_resposta(1, 3, ptr_opcao_escolhida);
                     continue;
 
                 } else if (*ptr_opcao_escolhida == 0){
-                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
+                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida, nome);
                     continue;
                 }
 
@@ -59,7 +61,7 @@ int main() {
                     continue;
 
                 } else if (*ptr_opcao_escolhida == 0){
-                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
+                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida, nome);
                     continue;
                 }
 

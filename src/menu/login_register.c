@@ -2,7 +2,7 @@
 #include "utils/utils.h"
 
 //Registra um novo usuário
-void register_user(void){
+char *register_user(void){
     system("clear");
     char users[5][15] = {
         {"Matheus"}
@@ -41,7 +41,7 @@ void register_user(void){
                 system("clear");
                 printf("********** USUÁRIO CADASTRADO COM SUCESSO! **********\n");
                 loop = false;
-                break;
+                return nome_usuario;
             }
         }
     }

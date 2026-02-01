@@ -16,8 +16,8 @@ void info_inventory(user_inventories *arg, char *name, int *ids,
 
 void verify_inventory(FILE *fp, int *validate);
 
-void set_inventory(FILE *fp, char *username, char *items, 
-    int *total_items, int *offset_items);
+void set_inventory_file(FILE *fp, char *username, char *items, 
+    int total_items, int *offset_items);
 
 #endif
 

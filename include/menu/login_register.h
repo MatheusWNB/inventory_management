@@ -3,6 +3,6 @@
 
 void login(void);
 
-void register_user(void);
+char *register_user(void);
 
 #endif

@@ -4,7 +4,7 @@
 #include "menu/menu.h"
 
 //Opção "1" o usuário pode editar e mostrar na tela os itens no seu estoque
-int print_inventory(int *opcao_escolhida){
+int print_inventory(int *opcao_escolhida, char *nome){
     FILE *ptr_arquivo_estoque = NULL;
     char *nome_arquivo = NULL;//Nome original
 
@@ -70,7 +70,7 @@ int print_inventory(int *opcao_escolhida){
             continue;
         } 
         system("clear");
-        set_inventory(ptr_arquivo_estoque);
+        set_inventory(ptr_arquivo_estoque, nome);
 
         //Nome formatado para abrir o .txt no sistema
         total_len = total_len + len_format_open;

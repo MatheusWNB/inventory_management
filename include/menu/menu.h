@@ -2,6 +2,6 @@
 #define MENU_H
 
 //Apresenta o menu inicial para o usuário
-int print_menu(int *opcao_escolhida);  
+int print_menu(int *opcao_escolhida, char *nome);  
 
 #endif
