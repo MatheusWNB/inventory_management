@@ -3,7 +3,7 @@
 #include "user_inventory/user_inventory.h"
 #include "menu/opcoes.h"
 
-void set_inventory(FILE *fp, char *username){
+void allocate_inventory(FILE *fp, char *username){
     char *name_itens = NULL;
     char *temp_itens = NULL;
     char *name_item = NULL;
@@ -95,23 +95,24 @@ void set_inventory(FILE *fp, char *username){
 
                 char nome[20];
                 int id;
-                int offset;
+                long offset;
                 char item[20];
+                rewind(fp);
+                fread(nome, sizeof(char), strlen(username), fp);
+                printf("////////// ITENS DE %s //////////\n", nome);
                 for(int i = 0; i < quantidade_itens; i++){
-
-                    rewind(fp);
-                    fread(nome, sizeof(char), strlen(username), fp);
                     fread(&id, sizeof(int), 1, fp);
-                    fread(&offset, sizeof(int), 1, fp);
+                    fread(&offset, sizeof(long), 1, fp);
                     fread(item, sizeof(char), strlen(name_itens + len_names[i]), fp);
 
                     printf(
-                        "Nome: %s\n"
                         "ID: %d\n"
-                        "Offset: %d\n"
+                        "Offset: %ld\n"
                         "Item: %s\n",
-                        nome, id, offset, item
+                        id, offset, item
                     );
+
+                    printf("---------\n");
                 }
             }
             continue;
@@ -151,7 +152,7 @@ void set_inventory(FILE *fp, char *username){
             getchar();
                 
         }else if(escolha == 3){
-            system("clear");
+            system("clear"); 
             printf("********** FECHANDO O EDITOR DE ESTOQUE **********\n");
 
             free(len_names);

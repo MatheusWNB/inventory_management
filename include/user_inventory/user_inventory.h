@@ -14,10 +14,13 @@ typedef struct {
 void info_inventory(user_inventories *arg, char *name, int *ids, 
     FILE *inventories, FILE *logs);
 
-void verify_inventory(FILE *fp, int *validate);
+int verify_inventory(FILE *fp);
 
 void set_inventory_file(FILE *fp, char *username, char *items, 
     int total_items, int *offset_items);
+
+void allocate_inventory(FILE *fp, char *username);
+
 
 #endif
 

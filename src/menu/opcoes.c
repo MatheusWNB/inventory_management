@@ -1,6 +1,7 @@
 #include "libs/libs.h"
 #include "menu/opcoes.h"
 #include "utils/utils.h"
+#include "user_inventory/user_inventory.h"
 #include "menu/menu.h"
 
 //Opção "1" o usuário pode editar e mostrar na tela os itens no seu estoque
@@ -70,7 +71,7 @@ int print_inventory(int *opcao_escolhida, char *nome){
             continue;
         } 
         system("clear");
-        set_inventory(ptr_arquivo_estoque, nome);
+        allocate_inventory(ptr_arquivo_estoque, nome);
 
         //Nome formatado para abrir o .txt no sistema
         total_len = total_len + len_format_open;
