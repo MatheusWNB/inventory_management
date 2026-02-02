@@ -96,13 +96,14 @@ void allocate_inventory(FILE *fp, char *username){
                 char nome[20];
                 int id;
                 long offset;
-                char item[20];
+                char *item = NULL;
                 rewind(fp);
                 fread(nome, sizeof(char), strlen(username), fp);
                 printf("////////// ITENS DE %s //////////\n", nome);
                 for(int i = 0; i < quantidade_itens; i++){
                     fread(&id, sizeof(int), 1, fp);
                     fread(&offset, sizeof(long), 1, fp);
+                    item = (char *)malloc(strlen(name_itens + len_names[i] * sizeof(char)));
                     fread(item, sizeof(char), strlen(name_itens + len_names[i]), fp);
 
                     printf(
@@ -113,7 +114,11 @@ void allocate_inventory(FILE *fp, char *username){
                     );
 
                     printf("---------\n");
+                    item = NULL;
                 }
+
+                free(item);
+                item = NULL;
             }
             continue;
         }else if(escolha == 2){
