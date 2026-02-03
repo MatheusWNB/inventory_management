@@ -12,9 +12,9 @@ int print_inventory(int *opcao_escolhida, char *nome){
     char *nome_arquivo_format = NULL; //Nome formatado para abrir o arquivo no programa
     char *abrir_arquivo_format = NULL; //Nome formatado para abrir o .txt no sistema
 
-    char format_txt[7] = "%s.bin";
+    char format_txt[] = "%s.bin";
     int len_format_txt = strlen(format_txt);
-    char format_open_txt[8] = "open %s";
+    char format_open_txt[] = "open %s";
     int len_format_open = strlen(format_open_txt);
 
     while(true){
@@ -83,6 +83,15 @@ int print_inventory(int *opcao_escolhida, char *nome){
         *opcao_escolhida = 0;
         return *opcao_escolhida;
     }
+
+    free(nome_arquivo);
+    nome_arquivo = NULL;
+
+    free(nome_arquivo_format);
+    nome_arquivo_format = NULL;
+
+    free(abrir_arquivo_format);
+    abrir_arquivo_format = NULL;       
 }
 
 //Opção "2" o usuário pode registrar novos estoques
@@ -112,12 +121,12 @@ int register_inventory(int *opcao_escolhida){
         ptr_arquivo_estoque = fopen(nome_arquivo_format, "a+b");
 
         //Se a criação do arquivo falhou, o usuário decide oque vai fazer
-        if (ptr_arquivo_estoque == NULL){
-            printf("Não foi possível criar o novo arquivo.\n");
-            
+        if(ptr_arquivo_estoque == NULL){
             int validar;
             int resposta;
             int *ptr_resposta = &resposta;
+
+            printf("Não foi possível criar o novo arquivo.\n");
 
             while(true){
                 printf("Deseja tentar novamente(0) ou voltar para o menu principal(1)?: ");
@@ -151,7 +160,11 @@ int register_inventory(int *opcao_escolhida){
 
         fclose(ptr_arquivo_estoque);
         free(nome_arquivo);
-    
+        nome_arquivo = NULL;
+
+        free(nome_arquivo_format);
+        nome_arquivo_format = NULL;
+        
         return *opcao_escolhida = 1;
     }
 }

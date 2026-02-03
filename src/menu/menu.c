@@ -3,15 +3,7 @@
 #include "utils/utils.h"
 #include "menu/login_register.h"
 
-int print_menu(int *opcao_escolhida, char *nome){
-
-    printf(
-        "Olá, seja bem-vindo ao gerenciador de estoque!\n"
-        "Para iniciarmos digite os seus dados de login(0) ou crie uma nova conta(1):\n"
-    );
-    nome = register_user();
-
-    putchar('\n');
+int print_menu(int *opcao_escolhida){
     //Usuário seleciona uma opção do menu e a resposta é validada
     while(true){
         int validar;
@@ -26,18 +18,13 @@ int print_menu(int *opcao_escolhida, char *nome){
         printf("Selecione uma opção: ");
         scanf("%d", opcao_escolhida);
 
-        //Valida a resposta do usuário
         validar = validar_resposta(1, 3, opcao_escolhida);
 
-        if (validar == false){
+        if(validar == false)
             continue;
-        }
 
         //A opção que o usuário escolheu é retornada para a main
         clearstdin();
         return *opcao_escolhida;
     }
-    
-    
-
 }

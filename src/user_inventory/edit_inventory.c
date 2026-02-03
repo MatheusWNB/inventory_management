@@ -4,17 +4,20 @@
 #include "menu/opcoes.h"
 
 void allocate_inventory(FILE *fp, char *username){
-    char *name_itens = NULL;
-    char *temp_itens = NULL;
+    char *name_items = NULL;
+    char *try_realloc_items = NULL;
     char *name_item = NULL;
 
-    int *len_names = NULL;
-    int *temp_len = NULL;
+    int *offsets = NULL;
+    int *try_realloc_offsets = NULL;
 
     int quantidade_itens = 0;
     int quantidade_bytes = 0;
-    int offset_bytes = 0;
-    int i_anterior = 0;
+    int offset = 0;
+    int id_items = 0;
+
+    char *resposta1 = NULL;
+    char *resposta2 = NULL;
 
     while(true){
         printf("////////// EDITOR DE ESTOQUES //////////\n");
@@ -32,9 +35,10 @@ void allocate_inventory(FILE *fp, char *username){
         clearstdin();
 
         if(escolha == 1){
-            int contador;
             loop:
+                int contador;
                 int i = 0;
+
                 printf("Quantos itens deseja adicionar?: ");
                 scanf("%d", &contador);
                 clearstdin();
@@ -45,53 +49,50 @@ void allocate_inventory(FILE *fp, char *username){
                     int len_name = strlen(name_item) + 1;
                     quantidade_bytes += len_name;
 
-                    temp_itens = (char *)realloc(name_itens, quantidade_bytes + 1);
-                    if(temp_itens == NULL){
+                    try_realloc_items = (char *)realloc(name_items, quantidade_bytes + 1);
+                    if(try_realloc_items == NULL){
                         system("clear");
                         printf("********** REGISTRO DE ITEM FALHOU **********\n");
-                        free(temp_itens);
+                        free(try_realloc_items);
                         break;
                     }
-
                     //Copia o nome do item para o começo do novo endereço realocado
-                    name_itens = temp_itens;
-                    strcpy(name_itens + offset_bytes, name_item);
+                    name_items = try_realloc_items;
+                    strcpy(name_items + offset, name_item);
                     quantidade_itens++;
 
-                    int *temp_len = realloc(len_names, quantidade_itens * sizeof(int));
-                    if(temp_len == NULL){
+                    int *try_realloc_offsets = realloc(offsets, quantidade_itens * sizeof(int));
+                    if(try_realloc_offsets == NULL){
                         system("clear");
                         printf("********** REGISTRO DE LEN FALHOU **********\n");
-                        free(temp_len);
+                        free(try_realloc_offsets);
                         break;
                     }
-
                     //Armazena o offset para o ínicio de cada item
-                    len_names = temp_len;
-                    len_names[i_anterior] = offset_bytes;
+                    offsets = try_realloc_offsets;
+                    offsets[id_items] = offset;
 
                     system("clear");
 
                     printf("////////// SEUS ITENS //////////\n");
                     for(int i1 = 0; i1 < quantidade_itens; i1++){
-                        printf("%d -> %s\n", i1 + 1, name_itens + len_names[i1]);
+                        printf("%d -> %s\n", i1 + 1, name_items + offsets[i1]);
                         printf("--------\n");
                     }
-
                     //Offset para o ínicio do próximo item
-                    offset_bytes = quantidade_bytes + 1;
+                    offset = quantidade_bytes + 1;
                     i++;
-                    i_anterior++;
+                    id_items++;
                 }
 
             printf("Deseja adicionar mais itens?(s/n): ");
-            char *resposta = getname(1);
+            char *resposta1 = getname(1);
             
-            if(strncmp(resposta, "s", 1) == 0){
+            if(strncmp(resposta1, "s", 1) == 0){
                 goto loop;
 
-            } else if(strncmp(resposta, "n", 1) == 0){
-                set_inventory_file(fp, username, name_itens, quantidade_itens, len_names);
+            } else if(strncmp(resposta1, "n", 1) == 0){
+                set_inventory_file(fp, username, name_items, quantidade_itens, offsets);
 
                 char nome[20];
                 int id;
@@ -103,8 +104,8 @@ void allocate_inventory(FILE *fp, char *username){
                 for(int i = 0; i < quantidade_itens; i++){
                     fread(&id, sizeof(int), 1, fp);
                     fread(&offset, sizeof(long), 1, fp);
-                    item = (char *)malloc(strlen(name_itens + len_names[i] * sizeof(char)));
-                    fread(item, sizeof(char), strlen(name_itens + len_names[i]), fp);
+                    item = (char *)malloc(strlen(name_items + offsets[i] * sizeof(char)));
+                    fread(item, sizeof(char), strlen(name_items + offsets[i]), fp);
 
                     printf(
                         "ID: %d\n"
@@ -116,34 +117,34 @@ void allocate_inventory(FILE *fp, char *username){
                     printf("---------\n");
                     item = NULL;
                 }
-
                 free(item);
                 item = NULL;
             }
             continue;
-        }else if(escolha == 2){
+
+        } else if(escolha == 2){
             printf("////////// VISUALIZAR E EDITAR ESTOQUE //////////\n");
             int any;
+            int verify = verify_inventory(fp);
             
-            if(name_itens == NULL){
+            if(verify == 0){
                 printf("Seu estoque está vazio, deseja adicionar algum item?(s/n)\n");
                 while(true){
-                    char *resposta = getname(1);
+                    resposta2 = getname(1);
 
-                    if(strncmp(resposta, "s", 1) == 0){
+                    if(strncmp(resposta2, "s", 1) == 0){
                         any = 0;
                         goto loop;
 
-                    }else if(strncmp(resposta, "n", 1) == 0){
+                    } else if(strncmp(resposta2, "n", 1) == 0){
                         any = 1;
                         break;
-                    }else{
+                    } else{
                         printf("********** DIGITE UMA RESPOSTA VÁLIDA (s/n) **********");
                         continue;
                     }
                 }
             }
-
             if(any == 1)
                 continue;
 
@@ -151,21 +152,32 @@ void allocate_inventory(FILE *fp, char *username){
             printf("////////// SEUS ITENS //////////\n");
 
             for(int i1 = 0; i1 < quantidade_itens; i1++){
-                printf("%d -> %s\n", i1 + 1, name_itens + len_names[i1]);
+                printf("%d -> %s\n", i1 + 1, name_items + offsets[i1]);
                 printf("--------\n");
             }
+
             getchar();
                 
-        }else if(escolha == 3){
+        } else if(escolha == 3){
             system("clear"); 
             printf("********** FECHANDO O EDITOR DE ESTOQUE **********\n");
 
-            free(len_names);
+            free(offsets);
+            offsets = NULL;
+
             free(name_item);
-            free(name_itens);
+            name_item = NULL;
+
+            free(name_items);
+            name_items = NULL;
+
+            free(resposta1);
+            resposta1 = NULL;
+
+            free(resposta2);
+            resposta2 = NULL;
 
             fclose(fp);
-
             break;
         }
     }

@@ -2,16 +2,23 @@
 #include "menu/menu.h"
 #include "menu/opcoes.h"
 #include "utils/utils.h"
+#include "menu/login_register.h"
 
 int main() {
     int opcao_escolhida = 0;
     int *ptr_opcao_escolhida = &opcao_escolhida;
     int validar;
     char *nome = NULL;
-    nome = getname(15);
-    
+
+    printf(
+        "Olá, seja bem-vindo ao gerenciador de estoque!\n"
+        "Para iniciarmos digite os seus dados de login(0) ou crie uma nova conta(1):\n"
+    );
+    nome = register_user();
+    putchar('\n');
+
     //Primeira validação de escolha do usuário
-    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida, nome);
+    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
 
     /* 
     Esse while gerencia todo o fluxo de escolhas conforme a necessidade
@@ -42,12 +49,12 @@ int main() {
                 system("clear");
                 print_inventory(ptr_opcao_escolhida, nome);
 
-                if (*ptr_opcao_escolhida != 0){
+                if(*ptr_opcao_escolhida != 0){
                     validar = validar_resposta(1, 3, ptr_opcao_escolhida);
                     continue;
 
-                } else if (*ptr_opcao_escolhida == 0){
-                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida, nome);
+                } else if(*ptr_opcao_escolhida == 0){
+                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
                     continue;
                 }
 
@@ -56,17 +63,15 @@ int main() {
                 system("clear");
                 register_inventory(ptr_opcao_escolhida);
 
-                if (*ptr_opcao_escolhida != 0){
+                if(*ptr_opcao_escolhida != 0){
                     validar = validar_resposta(1, 3, ptr_opcao_escolhida);
                     continue;
 
-                } else if (*ptr_opcao_escolhida == 0){
-                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida, nome);
+                } else if(*ptr_opcao_escolhida == 0){
+                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
                     continue;
                 }
-
             }
         }
-
     return 0;
 }
