@@ -14,4 +14,6 @@ char *getname(int max_len);
 
 char *alloc_mem(int total_len);
 
+int verify_inventory(FILE *fp);
+
 #endif

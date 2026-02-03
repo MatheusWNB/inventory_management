@@ -84,6 +84,15 @@ char *alloc_mem(int total_len){
     return name;
 }
 
+//Apenas verifica se um estoque está vazio
+int verify_inventory(FILE *fp){
+    fseek(fp, 0, SEEK_END);
+    int is_empty = ftell(fp);
+
+    return is_empty;
+}
+
+
 
 
 
