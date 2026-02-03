@@ -1,4 +1,5 @@
 #include "user_inventory/user_inventory.h"
+#include "utils/utils.h"
 
 /*
 Essa struct armazenará todos as informações
@@ -13,15 +14,6 @@ void info_inventory(user_inventories *arg, char *name, int *ids,
     arg->log_inventories = logs;
 }
                         
-//Apenas verifica se um estoque está vazio
-int verify_inventory(FILE *fp){
-    fseek(fp, 0, SEEK_END);
-    int is_empty = ftell(fp);
-
-    return is_empty;
-
-}
-
 /*
 Essa função armazena no arquivo de estoque do usuário
 todos os itens que foram adicionados em allocate_inventory
