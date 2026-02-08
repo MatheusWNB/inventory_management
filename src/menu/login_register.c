@@ -8,11 +8,8 @@ void get_names(FILE *fp, long *array_offsets, int *lens, int total_names){
 
     for(int i = 0; i < total_names; i++){
         fread(&id, sizeof(int), 1, fp);
-        fread(&len, sizeof(int), 1, fp);
-        fread(&offset, sizeof(long), 1, fp);
-
-        lens[i] = len;
-        array_offsets[i] = offset;
+        fread(&lens[i], sizeof(int), 1, fp);
+        fread(&array_offsets[i], sizeof(long), 1, fp);
 
         printf(
             "Id: %d\n"
@@ -25,10 +22,20 @@ void get_names(FILE *fp, long *array_offsets, int *lens, int total_names){
 
 int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int total_names){
     int validate = true;
+    char *nome = NULL;
 
     for(int i = 0; i < total_names; i++){
-        char *nome = NULL;
         int validate;
+
+        char *try_malloc = (char *) malloc(sizeof(char) * lens[i]);
+
+        if(try_malloc == NULL){
+            printf("********** MALLOC FALHOU! **********");
+            free(try_malloc);
+            return true;
+        }
+
+        nome = try_malloc;
 
         fseek(fp, array_offsets[i], SEEK_SET);
         fread(nome, sizeof(char), lens[i], fp);
@@ -36,7 +43,10 @@ int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int tot
         if(strncmp(username, nome, strlen(username)) == 0){
             system("clear");
             printf("********** USUÁRIO JÁ CADASTRADO! **********\n");
+            free(nome);
+
         } else{
+            free(nome);
             validate = false;
         }
 
@@ -97,13 +107,11 @@ char *register_user(void){
     system("clear");
     int len = strlen(nome_usuario);
 
-    if(total_names == 0){
-        total_names++;
-        fwrite(&total_names, sizeof(int), 1, f_users);
+    rewind(f_users);
+    total_names++;
+    fwrite(&total_names, sizeof(int), 1, f_users);
 
-    } else{
-        fseek(f_users, 0, SEEK_END);
-    }
+    fseek(f_users, 0, SEEK_END);
 
     fwrite(&id, sizeof(int), 1, f_users);
     fwrite(&len, sizeof(int), 1, f_users);
