@@ -5,18 +5,23 @@ void get_names(FILE *fp, long *array_offsets, int *lens, int total_names){
     long offset;
     int len;
     int id;
+    char nome[15];
 
     for(int i = 0; i < total_names; i++){
         fread(&id, sizeof(int), 1, fp);
         fread(&lens[i], sizeof(int), 1, fp);
         fread(&array_offsets[i], sizeof(long), 1, fp);
+        fread(nome, sizeof(char), lens[i], fp);
 
         printf(
             "Id: %d\n"
+            "Nome: %s\n"
             "Len: %d\n"
             "Offset: %ld\n",
-            id, lens[i], array_offsets[i]
+            id, nome, lens[i], array_offsets[i]
         );
+
+        memset(nome, 0, lens[i]);
     }
 }
 
@@ -49,9 +54,8 @@ int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int tot
             free(nome);
             validate = false;
         }
-
-        return validate;
     }
+    return validate;
 }
 
 char *register_user(void){
@@ -116,7 +120,7 @@ char *register_user(void){
     fwrite(&id, sizeof(int), 1, f_users);
     fwrite(&len, sizeof(int), 1, f_users);
 
-    num_bytes = ftell(f_users) + 1;
+    num_bytes = ftell(f_users) + sizeof(long);
     fwrite(&num_bytes, sizeof(long), 1, f_users);
 
     fwrite(nome_usuario, sizeof(char), len, f_users);
