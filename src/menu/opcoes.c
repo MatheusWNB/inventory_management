@@ -4,169 +4,139 @@
 #include "user_inventory/user_inventory.h"
 #include "menu/menu.h"
 
-//Opção "1" o usuário pode editar e mostrar na tela os itens no seu estoque
-int print_inventory(int *opcao_escolhida, char *nome){
-    FILE *ptr_arquivo_estoque = NULL;
-    char *nome_arquivo = NULL;//Nome original
+int print_inventory(char *nome){
+    FILE *fileptr = NULL;
+    char *nome_arquivo = NULL;
 
     char *nome_arquivo_format = NULL; //Nome formatado para abrir o arquivo no programa
-    char *abrir_arquivo_format = NULL; //Nome formatado para abrir o .txt no sistema
-
     char format_txt[] = "%s.bin";
     int len_format_txt = strlen(format_txt);
-    char format_open_txt[] = "open %s";
-    int len_format_open = strlen(format_open_txt);
+
+    int opcao_escolhida;
 
     while(true){
         printf("////////// GERENCIAR ESTOQUE ////////// \n");
         printf("Digite o nome do arquivo do seu estoque: ");
         
-        //Usuário digita o nome do seu arquivo
         nome_arquivo = getname(15);
         int len_nome_arquivo = strlen(nome_arquivo);
-
         int total_len = len_nome_arquivo + len_format_txt;
-        
         nome_arquivo_format = alloc_mem(total_len);
 
         //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
         snprintf(nome_arquivo_format, total_len + 1, format_txt, nome_arquivo);
-        ptr_arquivo_estoque = fopen(nome_arquivo_format, "r+b");
+        fileptr = fopen(nome_arquivo_format, "r+b");
 
         //Se a abertura do arquivo falhou, o usuário decide oque vai fazer
-        if (ptr_arquivo_estoque == NULL){
+        if (fileptr == NULL){
             system("clear");
             printf("ARQUIVO INEXISTENTE!\n");
 
             while(true){
                 int resposta;
-                int *ptr_resposta = &resposta;
                 int validar;
 
                 printf("Deseja tentar novamente(0) ou criar um novo estoque(1)?: ");
-                scanf("%d", ptr_resposta);
+                scanf("%d", resposta);
+                validar = validar_resposta(0, 1, resposta); 
 
-                //Valida a resposta do usuário
-                validar = validar_resposta(0, 1, ptr_resposta); 
-
-                //Usuário digitou uma opção incorreta, digite a opção novamente
                 if(validar == false){
                     continue;
 
                 } else if(validar == true){
                     //Retorna para o inicio da função atual
-                    if(*ptr_resposta == 0){
+                    if(resposta == 0){
                         clearstdin();
                         break;
 
                     //Usuário vai para a função de registro de novo estoque
-                    } else if(*ptr_resposta == 1){
+                    } else if(resposta == 1){
                         clearstdin();
                         system("clear");
-                        *opcao_escolhida = 2;
-                        return *opcao_escolhida;
+                        opcao_escolhida = 2;
+                        return opcao_escolhida;
                     }
                 }
             }
             continue;
         } 
 
-        fwrite(nome, sizeof(char), strlen(nome), ptr_arquivo_estoque);
+        fwrite(nome, sizeof(char), strlen(nome), fileptr);
         system("clear");
-        allocate_inventory(ptr_arquivo_estoque, nome);
-
-        //Nome formatado para abrir o .txt no sistema
-        total_len = total_len + len_format_open;
-        abrir_arquivo_format = alloc_mem(total_len);
-
-        snprintf(abrir_arquivo_format, total_len, format_open_txt, nome_arquivo_format);
-        system(abrir_arquivo_format);
-        
-        *opcao_escolhida = 0;
-        return *opcao_escolhida;
+        allocate_inventory(fileptr, nome);
+        break;
     }
-
+    
     free(nome_arquivo);
-    nome_arquivo = NULL;
-
     free(nome_arquivo_format);
-    nome_arquivo_format = NULL;
 
-    free(abrir_arquivo_format);
-    abrir_arquivo_format = NULL;       
+    return opcao_escolhida = 0;
 }
 
 //Opção "2" o usuário pode registrar novos estoques
-int register_inventory(int *opcao_escolhida){
-    FILE *ptr_arquivo_estoque = NULL;
-    char *nome_arquivo = NULL; //Nome original
-    char *nome_arquivo_format = NULL; //Nome formatado para abrir o arquivo no programa
+int register_inventory(){
+    FILE *fileptr = NULL;
+    char *nome_arquivo = NULL;
 
-    char format_txt[7] = "%s.bin";
+    char *nome_arquivo_format = NULL; //Nome formatado para abrir o arquivo no programa
+    char format_txt[] = "%s.bin";
     int len_format_txt = strlen(format_txt);
 
-    int total_len;
-
+    int opcao_escolhida, len_nome_arquivo, total_len;
+    
     while(true){
         printf("////////// CRIAR NOVO ESTOQUE ////////// \n");
         printf("Nome do seu novo estoque (Max. 15 caracteres): ");
 
         //Usuário digita o nome do seu arquivo
         nome_arquivo = getname(15);
-        int len_nome_arquivo = strlen(nome_arquivo);
+        len_nome_arquivo = strlen(nome_arquivo);
         total_len = len_nome_arquivo + len_format_txt;
 
         nome_arquivo_format = alloc_mem(total_len);
 
-        //Formata o nome do arquivo que o usuário digitou para .txt e tenta abrir o arquivo
+        //Formata o nome do arquivo que o usuário digitou para .bin e tenta abrir o arquivo
         snprintf(nome_arquivo_format, total_len + 1, format_txt, nome_arquivo);
-        ptr_arquivo_estoque = fopen(nome_arquivo_format, "a+b");
+        fileptr = fopen(nome_arquivo_format, "a+b");
 
         //Se a criação do arquivo falhou, o usuário decide oque vai fazer
-        if(ptr_arquivo_estoque == NULL){
+        if(fileptr == NULL){
             int validar;
             int resposta;
-            int *ptr_resposta = &resposta;
 
             printf("Não foi possível criar o novo arquivo.\n");
 
             while(true){
                 printf("Deseja tentar novamente(0) ou voltar para o menu principal(1)?: ");
-                scanf("%d", ptr_resposta);
+                scanf("%d", &resposta);
                 clearstdin();
 
-                //Valida a resposta do usuário
-                validar = validar_resposta(0, 1, ptr_resposta);
+                validar = validar_resposta(0, 1, resposta);
 
-                //Usuário digitou uma opção incorreta, digite a opção novamente
                 if (validar == false){
                     continue;
 
                 } else if (validar == true){
                     //Retorna para o inicio da função atual
-                    if (*ptr_resposta == 0)
+                    if (resposta == 0)
                         break;
 
                     //Usuário retorna para o menu
-                    if (*ptr_resposta == 1){
-                        *opcao_escolhida = 0;
-                        return *opcao_escolhida;
-                    }
+                    else if(resposta == 1)
+                        return opcao_escolhida = 0;
                 }
             }
         }
+
         system("clear");
         printf("O seu arquivo foi criado com sucesso!\n");
         printf("Aperte 'ENTER' para ser redirecionado ao menu de edição de estoque: ");
         getchar();
 
-        fclose(ptr_arquivo_estoque);
+        fclose(fileptr);
         free(nome_arquivo);
-        nome_arquivo = NULL;
-
         free(nome_arquivo_format);
-        nome_arquivo_format = NULL;
-        
-        return *opcao_escolhida = 1;
+
+        return opcao_escolhida = 1;
     }
 }
