@@ -31,7 +31,7 @@ void allocate_inventory(FILE *fp, char *username){
         printf("Sua escolha: ");
         int escolha;
         scanf("%d", &escolha);
-        validar_resposta(1, 2, &escolha);
+        validar_resposta(1, 2, escolha);
         clearstdin();
 
         if(escolha == 1){
@@ -162,19 +162,10 @@ void allocate_inventory(FILE *fp, char *username){
             printf("********** FECHANDO O EDITOR DE ESTOQUE **********\n");
 
             free(offsets);
-            offsets = NULL;
-
             free(name_item);
-            name_item = NULL;
-
             free(name_items);
-            name_items = NULL;
-
             free(resposta1);
-            resposta1 = NULL;
-
             free(resposta2);
-            resposta2 = NULL;
 
             fclose(fp);
             break;
