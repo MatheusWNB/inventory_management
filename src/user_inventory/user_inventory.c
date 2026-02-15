@@ -23,11 +23,7 @@ void set_inventory_file(FILE *fp, char *username, char *items,
 {      
     int validate;
     validate = verify_inventory(fp);
-
-    if(validate == 0){
-        int len = strlen(username);
-        fwrite(username, sizeof(char), len, fp);
-    }
+    
     int len_item;
     long total_bytes;
 

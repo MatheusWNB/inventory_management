@@ -12,7 +12,7 @@ void allocate_inventory(FILE *fp, char *username){
     int *try_realloc_offsets = NULL;
 
     int quantidade_itens = 0;
-    int quantidade_bytes = 0;
+    int quantidade_bytes = strlen(username);
     int offset = 0;
     int id_items = 0;
 

@@ -20,7 +20,6 @@ void get_names(FILE *fp, long *array_offsets, int *lens, int total_names){
             "Offset: %ld\n",
             id, nome, lens[i], array_offsets[i]
         );
-
         memset(nome, 0, lens[i]);
     }
 }
@@ -95,7 +94,7 @@ char *register_user(void){
         break;
     }
 
-    // system("clear");
+    system("clear");
     int len = strlen(nome_usuario);
 
     rewind(f_users);
@@ -107,10 +106,10 @@ char *register_user(void){
     fwrite(&total_names, sizeof(int), 1, f_users);
     fwrite(&len, sizeof(int), 1, f_users);
 
+    //username offset
     num_bytes = ftell(f_users) + sizeof(long);
     fwrite(&num_bytes, sizeof(long), 1, f_users);
 
-    printf("offset %ld\n", ftell(f_users));
     fwrite(nome_usuario, sizeof(char), len, f_users);
 
     printf("********** USUÁRIO CADASTRADO COM SUCESSO! **********\n");

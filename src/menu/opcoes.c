@@ -70,6 +70,8 @@ int print_inventory(int *opcao_escolhida, char *nome){
             }
             continue;
         } 
+
+        fwrite(nome, sizeof(char), strlen(nome), ptr_arquivo_estoque);
         system("clear");
         allocate_inventory(ptr_arquivo_estoque, nome);
 
