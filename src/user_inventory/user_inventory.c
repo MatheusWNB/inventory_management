@@ -23,7 +23,7 @@ void set_inventory_file(FILE *fp, char *username, char *items,
 {      
     int validate;
     validate = verify_inventory(fp);
-    
+
     int len_item;
     long total_bytes;
 
@@ -34,13 +34,10 @@ void set_inventory_file(FILE *fp, char *username, char *items,
 
         /*Armazena a posição do primeiro caractere do
         item a ser escrito no arquivo*/
-        long offset = ftell(fp) + 1;
+        long offset = ftell(fp) + sizeof(long);
         fwrite(&offset, sizeof(long), 1, fp);
 
         fwrite(items + offset_items[i], sizeof(char), len_item, fp);
 
     }
-    total_bytes = ftell(fp);
-    fwrite(&total_bytes, sizeof(long), 1, fp);
-
 }

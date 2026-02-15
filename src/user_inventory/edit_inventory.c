@@ -12,7 +12,7 @@ void allocate_inventory(FILE *fp, char *username){
     int *try_realloc_offsets = NULL;
 
     int quantidade_itens = 0;
-    int quantidade_bytes = strlen(username);
+    int quantidade_bytes = 0;
     int offset = 0;
     int id_items = 0;
 
@@ -92,19 +92,21 @@ void allocate_inventory(FILE *fp, char *username){
                 goto loop;
 
             } else if(strncmp(resposta1, "n", 1) == 0){
-                set_inventory_file(fp, username, name_items, quantidade_itens, offsets);
-
-                char nome[20];
+                char nome[15];
                 int id;
                 long offset;
-                char *item = NULL;
+                char item[20];
+
+                set_inventory_file(fp, username, name_items, quantidade_itens, offsets);
+
                 rewind(fp);
                 fread(nome, sizeof(char), strlen(username), fp);
                 printf("////////// ITENS DE %s //////////\n", nome);
+
                 for(int i = 0; i < quantidade_itens; i++){
+                    memset(item, 0, 20);
                     fread(&id, sizeof(int), 1, fp);
                     fread(&offset, sizeof(long), 1, fp);
-                    item = (char *)malloc(strlen(name_items + offsets[i] * sizeof(char)));
                     fread(item, sizeof(char), strlen(name_items + offsets[i]), fp);
 
                     printf(
@@ -115,10 +117,7 @@ void allocate_inventory(FILE *fp, char *username){
                     );
 
                     printf("---------\n");
-                    item = NULL;
                 }
-                free(item);
-                item = NULL;
             }
             continue;
 
