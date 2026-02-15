@@ -3,11 +3,11 @@
 #include "utils/utils.h"
 #include "menu/login_register.h"
 
-int print_menu(int *opcao_escolhida){
-    //Usuário seleciona uma opção do menu e a resposta é validada
-    while(true){
-        int validar;
+int print_menu(){
+    int validar;
+    int opcao_escolhida;
 
+    while(true){
         printf(
             "///////// MENU //////////\n"
             "(1) Visualizar e editar estoques registrados\n"
@@ -16,7 +16,7 @@ int print_menu(int *opcao_escolhida){
         );
 
         printf("Selecione uma opção: ");
-        scanf("%d", opcao_escolhida);
+        scanf("%d", &opcao_escolhida);
 
         validar = validar_resposta(1, 3, opcao_escolhida);
 
@@ -25,6 +25,6 @@ int print_menu(int *opcao_escolhida){
 
         //A opção que o usuário escolheu é retornada para a main
         clearstdin();
-        return *opcao_escolhida;
+        return opcao_escolhida;
     }
 }
