@@ -52,11 +52,9 @@ char *register_user(void){
     long *array_offsets = NULL; 
     int *lens = NULL;
     int total_names = 0;
-    int id = 0;
     int i;
     long num_bytes;
 
-    //Usuários serão registrados nesse arquivo (vou implementar)
     FILE *f_users;
     f_users = fopen("usuarios_registrados.bin", "r+b");
 
@@ -82,8 +80,8 @@ char *register_user(void){
     }
 
     printf("////////// REGISTRO DE USUÁRIO //////////\n");
-    int loop = true;
-    while(loop){
+
+    while(true){
         printf("Crie um nome de usuário[max 15 caracteres]: ");
         //Obtém o nome que o usuário digitar
         nome_usuario = getname(15);
@@ -94,10 +92,10 @@ char *register_user(void){
             if(validate == true)
                 continue;
         }
-
-        loop = false;
+        break;
     }
-    system("clear");
+
+    // system("clear");
     int len = strlen(nome_usuario);
 
     rewind(f_users);
@@ -106,12 +104,13 @@ char *register_user(void){
 
     fseek(f_users, 0, SEEK_END);
 
-    fwrite(&id, sizeof(int), 1, f_users);
+    fwrite(&total_names, sizeof(int), 1, f_users);
     fwrite(&len, sizeof(int), 1, f_users);
 
     num_bytes = ftell(f_users) + sizeof(long);
     fwrite(&num_bytes, sizeof(long), 1, f_users);
 
+    printf("offset %ld\n", ftell(f_users));
     fwrite(nome_usuario, sizeof(char), len, f_users);
 
     printf("********** USUÁRIO CADASTRADO COM SUCESSO! **********\n");
