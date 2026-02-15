@@ -6,71 +6,63 @@
 
 int main() {
     int opcao_escolhida = 0;
-    int *ptr_opcao_escolhida = &opcao_escolhida;
-    int validar;
     char *nome = NULL;
 
     printf(
         "Olá, seja bem-vindo ao gerenciador de estoque!\n"
         "Para iniciarmos digite os seus dados de login(0) ou crie uma nova conta(1):\n"
     );
+    
     nome = register_user();
     putchar('\n');
 
     //Primeira validação de escolha do usuário
-    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
+    opcao_escolhida = print_menu(opcao_escolhida);
 
     /* 
     Esse while gerencia todo o fluxo de escolhas conforme a necessidade
     do usuário.
     
-    O while principal funciona da seguinte maneira:
-    O usuário chama a primeira função, todas as escolhas 
-    serão armazenadas na variável "opcao_escolhida", que será 
-    referenciada em todas as funções pelo ponteiro "ptr_opcao_escolhida".
-
     Conforme a necessidade do usuário dentro das funções,
     ele poderá retornar para o menu de escolhas ou outras opções.
 
-    Se a função retorna "*ptr_opcao_escolhida == 0"
+    Se a função retorna "opcao_escolhida == 0"
     O menu principal de escolhas é chamado.
 
-    Se a função retorna "*ptr_opcao_escolhida != 0"
+    Se a função retorna "opcao_escolhida != 0"
     A função chamada dependerá do valor digitado pelo usuário
     */
 
     while(true){
-        switch(*ptr_opcao_escolhida){
+        switch(opcao_escolhida){
             /*
             Chama a função para abrir e editar os arquivos
             existentes do usuário
             */
             case 1:
                 system("clear");
-                print_inventory(ptr_opcao_escolhida, nome);
+                opcao_escolhida = print_inventory(nome);
 
-                if(*ptr_opcao_escolhida != 0){
-                    validar = validar_resposta(1, 3, ptr_opcao_escolhida);
-                    continue;
+                if(opcao_escolhida != 0)
+                    validar_resposta(1, 3, opcao_escolhida);
 
-                } else if(*ptr_opcao_escolhida == 0){
-                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
-                    continue;
-                }
+                else if(opcao_escolhida == 0)
+                    opcao_escolhida = print_menu();
+
+                break;
 
             //Chama a função para registrar um novo estoque
             case 2:
                 system("clear");
-                register_inventory(ptr_opcao_escolhida);
+                opcao_escolhida = register_inventory();
 
-                if(*ptr_opcao_escolhida != 0){
-                    validar = validar_resposta(1, 3, ptr_opcao_escolhida);
-                    continue;
+                if(opcao_escolhida != 0)
+                    validar_resposta(1, 3, opcao_escolhida);
 
-                } else if(*ptr_opcao_escolhida == 0){
-                    *ptr_opcao_escolhida = print_menu(ptr_opcao_escolhida);
-                    continue;
-                }
+                else if(opcao_escolhida == 0)
+                    opcao_escolhida = print_menu();
+
+                break;
             }
         }
     return 0;
