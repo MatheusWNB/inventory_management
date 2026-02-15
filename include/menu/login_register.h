@@ -5,7 +5,7 @@ void login(void);
 
 char *register_user(void);
 
-void get_names(FILE *fp, int *array_offsets, int *lens, int total_names);
+void get_names(FILE *fp, long*array_offsets, int *lens, int total_names);
 
 int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int total_names);
 
