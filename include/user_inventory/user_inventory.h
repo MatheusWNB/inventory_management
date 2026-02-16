@@ -14,7 +14,7 @@ typedef struct {
 void info_inventory(user_inventories *arg, char *name, int *ids, 
     FILE *inventories, FILE *logs);
 
-void set_inventory_file(FILE *fp, char *username, char *items, 
+void set_inventory_file(FILE *fp, char *items, 
     int total_items, int *offset_items);
 
 void allocate_inventory(FILE *fp, char *username);

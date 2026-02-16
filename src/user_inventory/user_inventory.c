@@ -18,14 +18,10 @@ void info_inventory(user_inventories *arg, char *name, int *ids,
 Essa função armazena no arquivo de estoque do usuário
 todos os itens que foram adicionados em allocate_inventory
 */
-void set_inventory_file(FILE *fp, char *username, char *items, 
+void set_inventory_file(FILE *fp, char *items, 
                         int total_items, int *offset_items)
 {      
-    int validate;
-    validate = verify_inventory(fp);
-
     int len_item;
-    long total_bytes;
 
     for(int i = 0; i < total_items; i++){
         len_item = strlen(items + offset_items[i]);

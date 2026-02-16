@@ -37,7 +37,7 @@ int print_inventory(char *nome){
                 int validar;
 
                 printf("Deseja tentar novamente(0) ou criar um novo estoque(1)?: ");
-                scanf("%d", resposta);
+                scanf("%d", &resposta);
                 validar = validar_resposta(0, 1, resposta); 
 
                 if(validar == false){
@@ -73,7 +73,6 @@ int print_inventory(char *nome){
     return opcao_escolhida = 0;
 }
 
-//Opção "2" o usuário pode registrar novos estoques
 int register_inventory(){
     FILE *fileptr = NULL;
     char *nome_arquivo = NULL;

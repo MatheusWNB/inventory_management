@@ -35,9 +35,11 @@ void allocate_inventory(FILE *fp, char *username){
         clearstdin();
 
         if(escolha == 1){
+            int contador;
+            int i = 0;
+            int i1;
+
             loop:
-                int contador;
-                int i = 0;
 
                 printf("Quantos itens deseja adicionar?: ");
                 scanf("%d", &contador);
@@ -61,7 +63,7 @@ void allocate_inventory(FILE *fp, char *username){
                     strcpy(name_items + offset, name_item);
                     quantidade_itens++;
 
-                    int *try_realloc_offsets = realloc(offsets, quantidade_itens * sizeof(int));
+                    try_realloc_offsets = realloc(offsets, quantidade_itens * sizeof(int));
                     if(try_realloc_offsets == NULL){
                         system("clear");
                         printf("********** REGISTRO DE LEN FALHOU **********\n");
@@ -75,7 +77,7 @@ void allocate_inventory(FILE *fp, char *username){
                     system("clear");
 
                     printf("////////// SEUS ITENS //////////\n");
-                    for(int i1 = 0; i1 < quantidade_itens; i1++){
+                    for(i1 = 0; i1 < quantidade_itens; i1++){
                         printf("%d -> %s\n", i1 + 1, name_items + offsets[i1]);
                         printf("--------\n");
                     }
@@ -86,7 +88,7 @@ void allocate_inventory(FILE *fp, char *username){
                 }
 
             printf("Deseja adicionar mais itens?(s/n): ");
-            char *resposta1 = getname(1);
+            resposta1 = getname(1);
             
             if(strncmp(resposta1, "s", 1) == 0){
                 goto loop;
@@ -97,7 +99,7 @@ void allocate_inventory(FILE *fp, char *username){
                 long offset;
                 char item[20];
 
-                set_inventory_file(fp, username, name_items, quantidade_itens, offsets);
+                set_inventory_file(fp, name_items, quantidade_itens, offsets);
 
                 rewind(fp);
                 fread(nome, sizeof(char), strlen(username), fp);

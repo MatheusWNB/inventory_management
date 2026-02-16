@@ -43,7 +43,7 @@ char *getname(int max_len){
         while((c = getchar()) != '\n'){
             try_again = false;
 
-            if(tamanho >= max_len)
+            if(tamanho == max_len)
                 break;
 
             char *try_realloc = (char *) realloc(nome, tamanho + 2);
@@ -66,10 +66,6 @@ char *getname(int max_len){
     }
 
     nome[tamanho] = '\0';
-
-    if(tamanho > max_len)
-        clearstdin();
-
     return nome;
 }
 
