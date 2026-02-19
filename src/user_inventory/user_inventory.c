@@ -19,11 +19,12 @@ Essa função armazena no arquivo de estoque do usuário
 todos os itens que foram adicionados em allocate_inventory
 */
 void set_inventory_file(FILE *fp, char *items, 
-                        int total_items, int *offset_items)
+                        int total_items, int *offset_items, int ids)
 {      
     int len_item;
+    fseek(fp, 0, SEEK_END);
 
-    for(int i = 0; i < total_items; i++){
+    for(int i = ids; i < total_items; i++){
         len_item = strlen(items + offset_items[i]);
 
         fwrite(&i, sizeof(int), 1, fp);
