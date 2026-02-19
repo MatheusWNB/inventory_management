@@ -16,9 +16,8 @@ void allocate_inventory(FILE *fp, char *username){
     int offset = 0;
     int id_items = 0;
     int saved_ids;
-
-    char *resposta1 = NULL;
-    char *resposta2 = NULL;
+    int contador;
+    char *resposta = NULL;
 
     while(true){
         printf("////////// EDITOR DE ESTOQUES //////////\n");
@@ -36,9 +35,6 @@ void allocate_inventory(FILE *fp, char *username){
         clearstdin();
 
         if(escolha == 1){
-            int contador;
-            int i = 0;
-            int i1;
             saved_ids = id_items;
 
             loop:
@@ -46,7 +42,7 @@ void allocate_inventory(FILE *fp, char *username){
                 scanf("%d", &contador);
                 clearstdin();
 
-                while(i < contador){
+                for(int i = 0; i < contador; i++){
                     printf("Item a ser registrado(max. 20 caracteres por item): ");
                     name_item = getname(20);
                     int len_name = strlen(name_item) + 1;
@@ -78,23 +74,23 @@ void allocate_inventory(FILE *fp, char *username){
                     system("clear");
 
                     printf("////////// SEUS ITENS //////////\n");
-                    for(i1 = 0; i1 < quantidade_itens; i1++){
+                    for(int i1 = 0; i1 < quantidade_itens; i1++){
                         printf("%d -> %s\n", i1 + 1, name_items + offsets[i1]);
                         printf("--------\n");
                     }
                     //Offset para o ínicio do próximo item
                     offset = quantidade_bytes + 1;
-                    i++;
                     id_items++;
                 }
 
             printf("Deseja adicionar mais itens?(s/n): ");
-            resposta1 = getname(1);
+            free_heap(resposta);
+            resposta = getname(1);
             
-            if(strncmp(resposta1, "s", 1) == 0){
+            if(strncmp(resposta, "s", 1) == 0){
                 goto loop;
 
-            } else if(strncmp(resposta1, "n", 1) == 0){
+            } else if(strncmp(resposta, "n", 1) == 0){
                 char nome[15];
                 int id;
                 long offset;
@@ -132,13 +128,14 @@ void allocate_inventory(FILE *fp, char *username){
             if(verify == 0){
                 printf("Seu estoque está vazio, deseja adicionar algum item?(s/n)\n");
                 while(true){
-                    resposta2 = getname(1);
+                    free_heap(resposta);
+                    resposta = getname(1);
 
-                    if(strncmp(resposta2, "s", 1) == 0){
+                    if(strncmp(resposta, "s", 1) == 0){
                         any = 0;
                         goto loop;
 
-                    } else if(strncmp(resposta2, "n", 1) == 0){
+                    } else if(strncmp(resposta, "n", 1) == 0){
                         any = 1;
                         break;
                     } else{
@@ -167,8 +164,6 @@ void allocate_inventory(FILE *fp, char *username){
             free(offsets);
             free(name_item);
             free(name_items);
-            free(resposta1);
-            free(resposta2);
 
             fclose(fp);
             break;
