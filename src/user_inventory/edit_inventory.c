@@ -15,6 +15,7 @@ void allocate_inventory(FILE *fp, char *username){
     int quantidade_bytes = 0;
     int offset = 0;
     int id_items = 0;
+    int saved_ids;
 
     char *resposta1 = NULL;
     char *resposta2 = NULL;
@@ -38,9 +39,9 @@ void allocate_inventory(FILE *fp, char *username){
             int contador;
             int i = 0;
             int i1;
+            saved_ids = id_items;
 
             loop:
-
                 printf("Quantos itens deseja adicionar?: ");
                 scanf("%d", &contador);
                 clearstdin();
@@ -99,7 +100,7 @@ void allocate_inventory(FILE *fp, char *username){
                 long offset;
                 char item[20];
 
-                set_inventory_file(fp, name_items, quantidade_itens, offsets);
+                set_inventory_file(fp, name_items, quantidade_itens, offsets, saved_ids);
 
                 rewind(fp);
                 fread(nome, sizeof(char), strlen(username), fp);
