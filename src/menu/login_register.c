@@ -2,8 +2,6 @@
 #include "utils/utils.h"
 
 void get_names(FILE *fp, long *array_offsets, int *lens, int total_names){
-    long offset;
-    int len;
     int id;
     char nome[15];
 
@@ -51,7 +49,6 @@ char *register_user(void){
     long *array_offsets = NULL; 
     int *lens = NULL;
     int total_names = 0;
-    int i;
     long num_bytes;
 
     FILE *f_users;
