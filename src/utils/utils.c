@@ -88,6 +88,12 @@ int verify_inventory(FILE *fp){
     return is_empty;
 }
 
+void free_heap(void *var){
+    if(var != NULL){
+        free(var);
+        var = NULL;
+    }
+}
 
 
 

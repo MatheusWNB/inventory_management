@@ -16,4 +16,6 @@ char *alloc_mem(int total_len);
 
 int verify_inventory(FILE *fp);
 
+void free_heap(void *var);
+
 #endif
