@@ -3,6 +3,6 @@
 
 int print_inventory(char *nome);
 
-int register_inventory();
+int register_inventory(char *nome);
 
 #endif
