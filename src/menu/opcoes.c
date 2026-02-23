@@ -61,7 +61,6 @@ int print_inventory(char *nome){
             continue;
         } 
 
-        fwrite(nome, sizeof(char), strlen(nome), fileptr);
         system("clear");
         allocate_inventory(fileptr, nome);
         break;
@@ -73,7 +72,7 @@ int print_inventory(char *nome){
     return opcao_escolhida = 0;
 }
 
-int register_inventory(){
+int register_inventory(char *nome){
     FILE *fileptr = NULL;
     char *nome_arquivo = NULL;
 
@@ -130,7 +129,10 @@ int register_inventory(){
         system("clear");
         printf("O seu arquivo foi criado com sucesso!\n");
         printf("Aperte 'ENTER' para ser redirecionado ao menu de edição de estoque: ");
-        getchar();
+        getchar(); 
+
+        int len_name = strlen(nome);
+        fwrite(nome, sizeof(char), len_name, fileptr);
 
         fclose(fileptr);
         free(nome_arquivo);
