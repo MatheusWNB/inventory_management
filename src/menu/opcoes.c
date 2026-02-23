@@ -132,6 +132,7 @@ int register_inventory(char *nome){
         getchar(); 
 
         int len_name = strlen(nome);
+        fwrite(&len_name, sizeof(int), 1, fileptr);
         fwrite(nome, sizeof(char), len_name, fileptr);
 
         fclose(fileptr);
