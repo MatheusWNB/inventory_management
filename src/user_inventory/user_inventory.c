@@ -47,49 +47,52 @@ void set_inventory_file(FILE *fp, char *items, int total_items,
     }
 }
 
-void get_inventory(FILE *fp, char *items, int *total_items, 
-                    int *offset_items, int *ids)
+void get_inventory(FILE *fp, char **items, int *total_items, 
+                    int **offset_items, int *ids, 
+                    int *qtd_bytes, int *offset)
 {   
     char *try_realloc_items = NULL;
     int *try_realloc_offsets = NULL;
     char item[20];
     int len_name;
-    int qtd_bytes = 0;
     int len_item;
 
+    rewind(fp);
     fread(&len_name, sizeof(int), 1, fp);
-    fseek(fp, len_name, SEEK_SET);
+    fseek(fp, ftell(fp) + len_name, SEEK_SET);
 
     fread(total_items, sizeof(int), 1, fp);
 
-    try_realloc_offsets = (int *)realloc(offset_items, sizeof(int) * (*total_items));
+    try_realloc_offsets = (int *)realloc(*offset_items, sizeof(int) * (*total_items));
 
     if(try_realloc_offsets == NULL){
         printf("REALLOC FALHOU\n");
         exit(1);
     }
 
-    offset_items = try_realloc_offsets;
+    *offset_items = try_realloc_offsets;
 
     for(int i = 0; i <= *total_items; i++){
+        (*offset_items)[i] = *offset;
+
         fread(ids, sizeof(int), 1, fp);
         fread(&len_item, sizeof(int), 1, fp);
-        qtd_bytes = len_item + 1;
+        *qtd_bytes += len_item + 1;
 
-        try_realloc_items = (char *)realloc(items, qtd_bytes);
+        try_realloc_items = (char *)realloc(*items, *qtd_bytes);
 
         if(try_realloc_items == NULL){
             printf("REALLOC FALHOU\n");
             exit(1);
         }
 
-        items = try_realloc_items;
+        *items = try_realloc_items;
         fseek(fp, ftell(fp) + sizeof(long), SEEK_SET);
         fread(item, sizeof(char), len_item, fp);
         item[len_item] = '\0';
-        strcpy(items + qtd_bytes, item);
+        strcpy(*items + *offset, item);
         memset(item, 0, 20);
 
-        offset_items[i] = qtd_bytes + 1;
+        *offset = *qtd_bytes + 1;
     }
 }
