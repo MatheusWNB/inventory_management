@@ -19,8 +19,8 @@ void set_inventory_file(FILE *fp, char *items,
 
 void allocate_inventory(FILE *fp, char *username);
 
-void get_inventory(FILE *fp, char *items, int *total_items, 
-    int *offset_items, int *ids);
+void get_inventory(FILE *fp, char **items, int *total_items, 
+    int **offset_items, int *ids, int *qtd_bytes, int *offset);
 
 #endif
 
