@@ -18,13 +18,18 @@ void info_inventory(user_inventories *arg, char *name, int *ids,
 Essa função armazena no arquivo de estoque do usuário
 todos os itens que foram adicionados em allocate_inventory
 */
-void set_inventory_file(FILE *fp, char *items, 
-                        int total_items, int *offset_items, int ids)
+void set_inventory_file(FILE *fp, char *items, int total_items, 
+                        int *offset_items, int ids, char *username)
 {      
     int len_item;
-    fseek(fp, 0, SEEK_END);
+    rewind(fp);
+    fseek(fp, ftell(fp) + sizeof(int), SEEK_SET);
+    fseek(fp, ftell(fp) + strlen(username), SEEK_SET);
 
-    fwrite(total_items, sizeof(int), 1, fp);
+    fwrite(&total_items, sizeof(int), 1, fp);
+
+    if(total_items != 0)
+        fseek(fp, 0, SEEK_END);
 
     for(int i = ids; i < total_items; i++){
         len_item = strlen(items + offset_items[i]);
@@ -51,14 +56,13 @@ void get_inventory(FILE *fp, char *items, int *total_items,
     int len_name;
     int qtd_bytes = 0;
     int len_item;
-    int offset;
-    
+
     fread(&len_name, sizeof(int), 1, fp);
     fseek(fp, len_name, SEEK_SET);
 
     fread(total_items, sizeof(int), 1, fp);
 
-    try_realloc_offsets = (int)realloc(fp, sizeof(int) * (*total_items));
+    try_realloc_offsets = (int *)realloc(offset_items, sizeof(int) * (*total_items));
 
     if(try_realloc_offsets == NULL){
         printf("REALLOC FALHOU\n");
@@ -67,13 +71,12 @@ void get_inventory(FILE *fp, char *items, int *total_items,
 
     offset_items = try_realloc_offsets;
 
-    for(int i = 0; i <= total_items; i++){
-        
+    for(int i = 0; i <= *total_items; i++){
         fread(ids, sizeof(int), 1, fp);
         fread(&len_item, sizeof(int), 1, fp);
         qtd_bytes = len_item + 1;
 
-        try_realloc_items = (char *)realloc(fp, qtd_bytes);
+        try_realloc_items = (char *)realloc(items, qtd_bytes);
 
         if(try_realloc_items == NULL){
             printf("REALLOC FALHOU\n");
@@ -81,12 +84,12 @@ void get_inventory(FILE *fp, char *items, int *total_items,
         }
 
         items = try_realloc_items;
-        seek(fp, ftell(fp) + sizeof(long), SEEK_SET);
+        fseek(fp, ftell(fp) + sizeof(long), SEEK_SET);
         fread(item, sizeof(char), len_item, fp);
         item[len_item] = '\0';
-        items = item;
+        strcpy(items + qtd_bytes, item);
+        memset(item, 0, 20);
 
         offset_items[i] = qtd_bytes + 1;
-
     }
 }
