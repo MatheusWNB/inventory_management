@@ -19,6 +19,13 @@ void allocate_inventory(FILE *fp, char *username){
     int contador;
     char *resposta = NULL;
 
+    fseek(fp, ftell(fp) - sizeof(int), SEEK_END);
+    fread(&quantidade_itens, sizeof(int), 1, fp);
+
+    if(quantidade_itens != 0)
+        get_inventory(fp, &name_items, &quantidade_itens, &offsets, &id_items,
+                    &quantidade_bytes, &offset);
+
     while(true){
         printf("////////// EDITOR DE ESTOQUES //////////\n");
         printf(
