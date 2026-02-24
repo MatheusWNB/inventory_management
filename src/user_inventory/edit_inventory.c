@@ -91,22 +91,25 @@ void allocate_inventory(FILE *fp, char *username){
                 goto loop;
 
             } else if(strncmp(resposta, "n", 1) == 0){
-                char nome[15];
                 int id;
                 long offset;
                 char item[20];
+                int len_item;
 
-                set_inventory_file(fp, name_items, quantidade_itens, offsets, saved_ids);
+                set_inventory_file(fp, name_items, quantidade_itens, offsets, saved_ids, username);
 
                 rewind(fp);
-                fread(nome, sizeof(char), strlen(username), fp);
-                printf("////////// ITENS DE %s //////////\n", nome);
+                fseek(fp, ftell(fp) + sizeof(int), SEEK_SET);
+                fseek(fp, ftell(fp) + strlen(username), SEEK_SET);
+                printf("////////// ITENS DE %s //////////\n", username);
+                fread(&quantidade_itens, sizeof(int), 1, fp);
 
                 for(int i = 0; i < quantidade_itens; i++){
                     memset(item, 0, 20);
                     fread(&id, sizeof(int), 1, fp);
+                    fread(&len_item, sizeof(int), 1, fp);
                     fread(&offset, sizeof(long), 1, fp);
-                    fread(item, sizeof(char), strlen(name_items + offsets[i]), fp);
+                    fread(item, sizeof(char), len_item, fp);
 
                     printf(
                         "ID: %d\n"
