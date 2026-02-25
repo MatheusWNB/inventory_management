@@ -72,7 +72,7 @@ void get_inventory(FILE *fp, char **items, int *total_items,
 
     *offset_items = try_realloc_offsets;
 
-    for(int i = 0; i <= *total_items; i++){
+    for(int i = 0; i < *total_items; i++){
         (*offset_items)[i] = *offset;
 
         fread(ids, sizeof(int), 1, fp);
