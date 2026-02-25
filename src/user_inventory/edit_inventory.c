@@ -19,7 +19,7 @@ void allocate_inventory(FILE *fp, char *username){
     int contador;
     char *resposta = NULL;
 
-    fseek(fp, sizeof(int) + (sizeof(char) * strlen(username)), SEEK_SET);
+    fseek(fp, sizeof(int) + strlen(username), SEEK_SET);
     fread(&quantidade_itens, sizeof(int), 1, fp);
 
     if(quantidade_itens != 0){
