@@ -135,7 +135,7 @@ void allocate_inventory(FILE *fp, char *username){
         } else if(escolha == 2){
             printf("////////// VISUALIZAR E EDITAR ESTOQUE //////////\n");
             int any;
-            int verify = verify_inventory(fp);
+            int verify = is_empty(fp);
             
             if(verify == 0){
                 printf("Seu estoque está vazio, deseja adicionar algum item?(s/n)\n");
