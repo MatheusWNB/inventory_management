@@ -1,9 +1,7 @@
 #ifndef LOGIN_REGISTER_H
 #define LOGIN_REGISTER_H
 
-void login(void);
-
-char *register_user(void);
+char *login_register(int option);
 
 void get_names(FILE *fp, long*array_offsets, int *lens, int total_names);
 
