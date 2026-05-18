@@ -30,7 +30,7 @@ int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int tot
         fseek(fp, array_offsets[i], SEEK_SET);
         fread(nome, sizeof(char), lens[i], fp);
             
-        if(strncmp(username, nome, strlen(username)) == 0){
+        if(strncmp(username, nome, 15) == 0){
             system("clear");
             printf("********** USUÁRIO JÁ CADASTRADO! **********\n");
             validate = true;
@@ -44,7 +44,7 @@ int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int tot
     return validate;
 }
 
-char *register_user(void){
+char *login_register(int option){
     char *nome_usuario = NULL;
     long *array_offsets = NULL; 
     int *lens = NULL;
@@ -54,7 +54,7 @@ char *register_user(void){
     FILE *f_users;
     f_users = fopen("usuarios_registrados.bin", "r+b");
 
-    int validate = verify_inventory(f_users);
+    int validate = is_empty(f_users);
 
     if(validate != 0){
         rewind(f_users);
@@ -75,42 +75,63 @@ char *register_user(void){
         get_names(f_users, array_offsets, lens, total_names);
     }
 
-    printf("////////// REGISTRO DE USUÁRIO //////////\n");
+    if(option == 1){
+        printf("////////// REGISTRO DE USUÁRIO //////////\n");
 
-    while(true){
-        printf("Crie um nome de usuário[max 15 caracteres]: ");
-        //Obtém o nome que o usuário digitar
-        nome_usuario = getname(15);
+        while(true){
+            printf("Crie um nome de usuário[max 15 caracteres]: ");
+            //Obtém o nome que o usuário digitar
+            nome_usuario = getname(15);
 
-        if(total_names != 0){
-            int validate = equal_name(f_users, nome_usuario, array_offsets, lens, total_names);
+            if(total_names != 0){
+                int validate = equal_name(f_users, nome_usuario, 
+                    array_offsets, lens, total_names);
 
-            if(validate == true)
-                continue;
+                if(validate == true)
+                    continue;
+            }
+            break;
         }
-        break;
+
+        system("clear");
+        int len = strlen(nome_usuario);
+
+        rewind(f_users);
+        total_names++;
+        fwrite(&total_names, sizeof(int), 1, f_users);
+
+        fseek(f_users, 0, SEEK_END);
+
+        fwrite(&total_names, sizeof(int), 1, f_users);
+        fwrite(&len, sizeof(int), 1, f_users);
+
+        //username offset
+        num_bytes = ftell(f_users) + sizeof(long);
+        fwrite(&num_bytes, sizeof(long), 1, f_users);
+        fwrite(nome_usuario, sizeof(char), len, f_users);
+
+        printf("********** USUÁRIO CADASTRADO COM SUCESSO! **********\n");
+        fclose(f_users);
+
+    } else if(option == 0){
+        printf("////////// FAÇA SEU LOGIN //////////\n");
+
+        while(true){
+            printf("Digite seu nome de usuário: ");
+            nome_usuario = getname(15);
+
+            if(total_names != 0){
+                int validate = equal_name(f_users, nome_usuario, 
+                    array_offsets, lens, total_names);
+
+                if(validate == false)
+                    continue;
+
+                break;
+            }
+        }
     }
 
-    system("clear");
-    int len = strlen(nome_usuario);
-
-    rewind(f_users);
-    total_names++;
-    fwrite(&total_names, sizeof(int), 1, f_users);
-
-    fseek(f_users, 0, SEEK_END);
-
-    fwrite(&total_names, sizeof(int), 1, f_users);
-    fwrite(&len, sizeof(int), 1, f_users);
-
-    //username offset
-    num_bytes = ftell(f_users) + sizeof(long);
-    fwrite(&num_bytes, sizeof(long), 1, f_users);
-
-    fwrite(nome_usuario, sizeof(char), len, f_users);
-
-    printf("********** USUÁRIO CADASTRADO COM SUCESSO! **********\n");
-
-    fclose(f_users);
     return nome_usuario;
 }
+
