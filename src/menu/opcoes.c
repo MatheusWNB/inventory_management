@@ -59,9 +59,24 @@ int print_inventory(char *nome){
                 }
             }
             continue;
-        } 
+        }
 
+        int len_name;
+        fread(&len_name, sizeof(int), 1, fileptr);
+
+        char name_in_file[15];
+        fread(name_in_file, sizeof(char), len_name, fileptr);
+        name_in_file[1] = '\0';
+        
+        if(strncmp(name_in_file, nome, 15) == 1){
+            system("clear");
+            printf("********** VOCÊ NÃO TEM PERMISSÃO PARA ACESSAR ESSE ARQUIVO! **********");
+            break;
+        }
+        
         system("clear");
+        printf("%d\n", len_name);
+        printf("%s\n", name_in_file);
         allocate_inventory(fileptr, nome);
         break;
     }
