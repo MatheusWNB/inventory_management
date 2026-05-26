@@ -64,16 +64,16 @@ int print_inventory(char *nome){
         int len_name;
         fread(&len_name, sizeof(int), 1, fileptr);
 
-        char name_in_file[15];
+        char name_in_file[len_name + 1];
         fread(name_in_file, sizeof(char), len_name, fileptr);
-        name_in_file[1] = '\0';
-        
-        if(strncmp(name_in_file, nome, 15) == 1){
+        name_in_file[len_name] = '\0';
+
+        if(strncmp(name_in_file, nome, 15) != 0){
             system("clear");
-            printf("********** VOCÊ NÃO TEM PERMISSÃO PARA ACESSAR ESSE ARQUIVO! **********");
+            printf("********** VOCÊ NÃO TEM PERMISSÃO PARA ACESSAR ESSE ARQUIVO! **********\n");
             break;
         }
-        
+
         system("clear");
         printf("%d\n", len_name);
         printf("%s\n", name_in_file);
