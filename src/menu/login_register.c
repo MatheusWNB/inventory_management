@@ -4,8 +4,9 @@
 void get_names(FILE *fp, long *array_offsets, int *lens, int total_names){
     int id;
     char nome[15];
-
+    
     for(int i = 0; i < total_names; i++){
+        memset(nome, 0, 15);
         fread(&id, sizeof(int), 1, fp);
         fread(&lens[i], sizeof(int), 1, fp);
         fread(&array_offsets[i], sizeof(long), 1, fp);
@@ -18,15 +19,15 @@ void get_names(FILE *fp, long *array_offsets, int *lens, int total_names){
             "Offset: %ld\n",
             id, nome, lens[i], array_offsets[i]
         );
-        memset(nome, 0, lens[i]);
     }
 }
 
 int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int total_names){
     int validate = true;
     char nome[15];
-
+    
     for(int i = 0; i < total_names; i++){
+        memset(nome, 0, 15);
         fseek(fp, array_offsets[i], SEEK_SET);
         fread(nome, sizeof(char), lens[i], fp);
             
@@ -38,7 +39,6 @@ int equal_name(FILE *fp, char *username, long *array_offsets, int *lens, int tot
 
         } else{
             validate = false;
-            memset(nome, 0, lens[i]);
         }
     }
     return validate;
@@ -95,6 +95,7 @@ char *login_register(int option){
 
         system("clear");
         int len = strlen(nome_usuario);
+        printf("LEN: %d\n", len);
 
         rewind(f_users);
         total_names++;
