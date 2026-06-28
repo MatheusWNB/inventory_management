@@ -24,7 +24,7 @@ void allocate_inventory(FILE *fp, char *username){
 
     if(quantidade_itens != 0){
         get_inventory(fp, &name_items, &quantidade_itens, &offsets, &id_items,
-                    &quantidade_bytes, &offset);
+                        &quantidade_bytes, &offset);
         id_items += 1;
     };
 
@@ -100,31 +100,28 @@ void allocate_inventory(FILE *fp, char *username){
                 goto loop;
 
             } else if(strncmp(resposta, "n", 1) == 0){
-                int id;
-                long offset;
-                char item[20];
-                int len_item;
-
-                set_inventory_file(fp, name_items, quantidade_itens, offsets, saved_ids, username);
+                // set_inventory_file(fp, name_items, quantidade_itens, 
+                                        //offsets, saved_ids, username);
 
                 rewind(fp);
                 fseek(fp, ftell(fp) + sizeof(int), SEEK_SET);
                 fseek(fp, ftell(fp) + strlen(username), SEEK_SET);
                 printf("////////// ITENS DE %s //////////\n", username);
-                fread(&quantidade_itens, sizeof(int), 1, fp);
+                fseek(fp, ftell(fp) + sizeof(int), SEEK_SET);
+                // fread(&quantidade_itens, sizeof(int), 1, fp);
 
                 for(int i = 0; i < quantidade_itens; i++){
-                    memset(item, 0, 20);
-                    fread(&id, sizeof(int), 1, fp);
-                    fread(&len_item, sizeof(int), 1, fp);
-                    fread(&offset, sizeof(long), 1, fp);
-                    fread(item, sizeof(char), len_item, fp);
+                    // memset(item, 0, 20);
+                    // fread(&id, sizeof(int), 1, fp);
+                    // fread(&len_item, sizeof(int), 1, fp);
+                    // fread(&offset, sizeof(long), 1, fp);
+                    // fread(item, sizeof(char), len_item, fp);
 
                     printf(
                         "ID: %d\n"
-                        "Offset: %ld\n"
+                        "Offset: %d\n"
                         "Item: %s\n",
-                        id, offset, item
+                        i, offsets[i], name_items + offsets[i]
                     );
 
                     printf("---------\n");
@@ -172,6 +169,9 @@ void allocate_inventory(FILE *fp, char *username){
         } else if(escolha == 3){
             system("clear"); 
             printf("********** FECHANDO O EDITOR DE ESTOQUE **********\n");
+
+            set_inventory_file(fp, name_items, quantidade_itens, 
+                                offsets, saved_ids, username);
 
             free(offsets);
             free(name_item);
